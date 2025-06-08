@@ -253,27 +253,78 @@
                 </div>
                 
                 <!-- Diagram Venn -->
-                <div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Diagram Venn Peluang</h3>
-                    <div class="venn-container">
-                        <div class="venn-a">A</div>
-                        <div class="venn-b">B</div>
-                        <div class="venn-intersection">A∩B</div>
-                    </div>
-                    <div class="mt-4 text-gray-700">
-                        <p>Diagram Venn membantu memvisualisasikan hubungan antara peristiwa:</p>
-                        <ul class="list-disc pl-5 mt-2 space-y-1">
-                            <li>Daerah biru: Peluang A (P(A))</li>
-                            <li>Daerah hijau: Peluang B (P(B))</li>
-                            <li>Daerah ungu: Peluang A dan B terjadi bersama (P(A∩B))</li>
-                        </ul>
-                        <div class="mt-3 bg-indigo-50 p-3 rounded-lg">
-                            <p class="text-indigo-800 text-sm"><strong>Contoh:</strong> Jika A = peluang terambil kartu hati, B = peluang terambil kartu bergambar, maka A∩B = peluang terambil kartu hati yang bergambar.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- Diagram Venn -->
+<div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Diagram Venn Peluang</h3>
+    <div class="venn-container">
+        <div class="venn-a">A</div>
+        <div class="venn-b">B</div>
+        <div class="venn-intersection">A∩B</div>
+    </div>
+    <div class="mt-4 text-gray-700">
+        <p>Diagram Venn membantu memvisualisasikan hubungan antara peristiwa:</p>
+        <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Daerah biru: Peluang A (P(A))</li>
+            <li>Daerah hijau: Peluang B (P(B))</li>
+            <li>Daerah ungu: Peluang A dan B terjadi bersama (P(A∩B))</li>
+        </ul>
+        <div class="mt-3 bg-indigo-50 p-3 rounded-lg">
+            <p class="text-indigo-800 text-sm"><strong>Contoh:</strong> Jika A = peluang terambil kartu hati, B = peluang terambil kartu bergambar, maka A∩B = peluang terambil kartu hati yang bergambar.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .venn-container {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        margin: 0 auto;
+    }
+    .venn-a {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-color: rgba(102, 126, 234, 0.5);
+        border-radius: 50%;
+        top: 40px;
+        left: 60px;  /* Diperbarui dari 50px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+    .venn-b {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-color: rgba(75, 192, 192, 0.5);
+        border-radius: 50%;
+        top: 40px;
+        left: 120px;  /* Diperbarui dari 130px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+    }
+    .venn-intersection {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background-color: rgba(153, 102, 255, 0.7);
+        border-radius: 50%;
+        top: 70px;
+        left: 120px;  /* Diperbarui dari 135px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+</style>
 
         <!-- Contoh Soal -->
         <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
