@@ -386,7 +386,7 @@
                 // Sembunyikan tooltip saat klik di luar
                 setTimeout(() => {
                     const clickHandler = function(e) {
-                        if (!tooltip.contains(e.target) {
+                        if (!tooltip.contains(e.target) && !e.target.classList.contains('info-icon')) {
                             tooltip.classList.remove('show');
                             document.removeEventListener('click', clickHandler);
                         }
@@ -506,7 +506,7 @@
                         const favorable = parseInt(document.getElementById('favorableOutcomes').value);
                         const total = parseInt(document.getElementById('totalOutcomes').value);
                         
-                        if (isNaN(favorable) throw new Error('Kejadian yang Menguntungkan harus berupa angka');
+                        if (isNaN(favorable)) throw new Error('Kejadian yang Menguntungkan harus berupa angka');
                         if (isNaN(total)) throw new Error('Total Kemungkinan harus berupa angka');
                         if (favorable <= 0) throw new Error('Kejadian yang Menguntungkan harus lebih besar dari 0');
                         if (total <= 0) throw new Error('Total Kemungkinan harus lebih besar dari 0');
