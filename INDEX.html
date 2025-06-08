@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program Statistika</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Program Statistika</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Ukuran Pemusatan Data</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="dataInput" class="form-label">Masukkan data (pisahkan dengan koma):</label>
+                            <input type="text" class="form-control" id="dataInput" placeholder="Contoh: 5, 7, 8, 9, 10">
+                        </div>
+                        <button class="btn btn-primary" onclick="calculateCentralTendency()">Hitung</button>
+                        
+                        <div class="results mt-3">
+                            <h5>Hasil:</h5>
+                            <p>Mean: <span id="meanResult">-</span></p>
+                            <p>Median: <span id="medianResult">-</span></p>
+                            <p>Modus: <span id="modeResult">-</span></p>
+                            <p>Range: <span id="rangeResult">-</span></p>
+                            <p>Varians: <span id="varianceResult">-</span></p>
+                            <p>Standar Deviasi: <span id="stdDevResult">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3>Peluang</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Perhitungan:</label>
+                            <select class="form-select" id="probabilityType" onchange="showProbabilityFields()">
+                                <option value="basic">Peluang Dasar</option>
+                                <option value="permutation">Permutasi</option>
+                                <option value="combination">Kombinasi</option>
+                                <option value="binomial">Distribusi Binomial</option>
+                            </select>
+                        </div>
+                        
+                        <div id="basicFields" class="probability-fields">
+                            <div class="mb-3">
+                                <label for="favorableOutcomes" class="form-label">Kejadian yang Menguntungkan:</label>
+                                <input type="number" class="form-control" id="favorableOutcomes">
+                            </div>
+                            <div class="mb-3">
+                                <label for="totalOutcomes" class="form-label">Total Kemungkinan:</label>
+                                <input type="number" class="form-control" id="totalOutcomes">
+                            </div>
+                        </div>
+                        
+                        <div id="permutationFields" class="probability-fields d-none">
+                            <div class="mb-3">
+                                <label for="nPermutation" class="form-label">n (Total Objek):</label>
+                                <input type="number" class="form-control" id="nPermutation">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rPermutation" class="form-label">r (Objek yang Diambil):</label>
+                                <input type="number" class="form-control" id="rPermutation">
+                            </div>
+                        </div>
+                        
+                        <div id="combinationFields" class="probability-fields d-none">
+                            <div class="mb-3">
+                                <label for="nCombination" class="form-label">n (Total Objek):</label>
+                                <input type="number" class="form-control" id="nCombination">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rCombination" class="form-label">r (Objek yang Diambil):</label>
+                                <input type="number" class="form-control" id="rCombination">
+                            </div>
+                        </div>
+                        
+                        <div id="binomialFields" class="probability-fields d-none">
+                            <div class="mb-3">
+                                <label for="nTrials" class="form-label">n (Jumlah Percobaan):</label>
+                                <input type="number" class="form-control" id="nTrials">
+                            </div>
+                            <div class="mb-3">
+                                <label for="kSuccesses" class="form-label">k (Jumlah Keberhasilan):</label>
+                                <input type="number" class="form-control" id="kSuccesses">
+                            </div>
+                            <div class="mb-3">
+                                <label for="pProbability" class="form-label">p (Peluang Keberhasilan):</label>
+                                <input type="number" class="form-control" id="pProbability" step="0.01" min="0" max="1">
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-success" onclick="calculateProbability()">Hitung</button>
+                        
+                        <div class="results mt-3">
+                            <h5>Hasil:</h5>
+                            <p>Peluang: <span id="probabilityResult">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3>Visualisasi Data</h3>
+            </div>
+            <div class="card-body">
+                <canvas id="dataChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
