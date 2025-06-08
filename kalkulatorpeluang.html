@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Peluang</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --danger-color: #e74a3b;
+            --warning-color: #f6c23e;
+            --info-color: #36b9cc;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+        }
+        
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            font-weight: bold;
+        }
+        
+        .probability-fields {
+            transition: all 0.3s ease;
+        }
+        
+        .results {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            font-weight: bold;
+            padding: 8px 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Gaya untuk tooltip */
+        .info-icon {
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-left: 5px;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            background-color: #e9f0ff;
+            transition: all 0.3s;
+        }
+        
+        .info-icon:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tooltip-box {
+            display: none;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 12px;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #495057;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tooltip-box.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        /* Gaya untuk error message */
+        .error-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            z-index: 1000;
+            animation: slideIn 0.5s, fadeOut 0.5s 2.5s forwards;
+        }
+        
+        .error-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            .error-message {
+                width: 90%;
+                left: 5%;
+                right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Error Message Container -->
+    <div id="errorContainer"></div>
+    
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Kalkulator Peluang <i class="bi bi-dice-5"></i></h1>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h3><i class="bi bi-calculator"></i> Kalkulator Peluang</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">
+                        Jenis Perhitungan:
+                        <span class="info-icon" onclick="showTooltip('calculationType')">ⓘ</span>
+                    </label>
+                    <select class="form-select" id="probabilityType" onchange="showProbabilityFields()">
+                        <option value="basic">Peluang Dasar</option>
+                        <option value="permutation">Permutasi</option>
+                        <option value="combination">Kombinasi</option>
+                        <option value="binomial">Distribusi Binomial</option>
+                    </select>
+                    <div id="calculationTypeTooltip" class="tooltip-box">
+                        Pilih jenis perhitungan peluang:<br>
+                        - <strong>Peluang Dasar</strong>: Peluang kejadian sederhana<br>
+                        - <strong>Permutasi</strong>: Urutan penting (nPr)<br>
+                        - <strong>Kombinasi</strong>: Urutan tidak penting (nCr)<br>
+                        - <strong>Binomial</strong>: Peluang keberhasilan dalam n percobaan
+                    </div>
+                </div>
+                
+                <div id="basicFields" class="probability-fields">
+                    <div class="mb-3">
+                        <label for="favorableOutcomes" class="form-label">
+                            Kejadian yang Menguntungkan:
+                            <span class="info-icon" onclick="showTooltip('favorable')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="favorableOutcomes">
+                        <div id="favorableTooltip" class="tooltip-box">
+                            Jumlah hasil/cara yang diinginkan atau sesuai dengan kriteria kejadian. 
+                            Contoh: Pada dadu, kejadian muncul angka genap memiliki 3 kejadian 
+                            menguntungkan (2, 4, 6).
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="totalOutcomes" class="form-label">
+                            Total Kemungkinan:
+                            <span class="info-icon" onclick="showTooltip('total')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="totalOutcomes">
+                        <div id="totalTooltip" class="tooltip-box">
+                            Jumlah semua hasil yang mungkin terjadi dalam suatu eksperimen. 
+                            Contoh: Pada dadu standar ada 6 kemungkinan (1-6), pada koin ada 
+                            2 kemungkinan (kepala/ekor).
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="permutationFields" class="probability-fields d-none">
+                    <div class="mb-3">
+                        <label for="nPermutation" class="form-label">
+                            n (Total Objek):
+                            <span class="info-icon" onclick="showTooltip('nPerm')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="nPermutation">
+                        <div id="nPermTooltip" class="tooltip-box">
+                            Jumlah total objek yang tersedia. Harus lebih besar atau sama dengan r.
+                            Contoh: Jika ingin menyusun 2 huruf dari ABCDE, maka n = 5.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rPermutation" class="form-label">
+                            r (Objek yang Diambil):
+                            <span class="info-icon" onclick="showTooltip('rPerm')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="rPermutation">
+                        <div id="rPermTooltip" class="tooltip-box">
+                            Jumlah objek yang akan diambil dan disusun. Harus lebih kecil atau sama dengan n.
+                            Contoh: Jika ingin menyusun 2 huruf dari ABCDE, maka r = 2.
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="combinationFields" class="probability-fields d-none">
+                    <div class="mb-3">
+                        <label for="nCombination" class="form-label">
+                            n (Total Objek):
+                            <span class="info-icon" onclick="showTooltip('nComb')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="nCombination">
+                        <div id="nCombTooltip" class="tooltip-box">
+                            Jumlah total objek yang tersedia. Harus lebih besar atau sama dengan r.
+                            Contoh: Jika ingin memilih 2 buah dari 5 apel, maka n = 5.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rCombination" class="form-label">
+                            r (Objek yang Diambil):
+                            <span class="info-icon" onclick="showTooltip('rComb')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="rCombination">
+                        <div id="rCombTooltip" class="tooltip-box">
+                            Jumlah objek yang akan dipilih tanpa memperhatikan urutan. Harus lebih kecil atau sama dengan n.
+                            Contoh: Jika ingin memilih 2 buah dari 5 apel, maka r = 2.
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="binomialFields" class="probability-fields d-none">
+                    <div class="mb-3">
+                        <label for="nTrials" class="form-label">
+                            n (Jumlah Percobaan):
+                            <span class="info-icon" onclick="showTooltip('nTrials')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="nTrials">
+                        <div id="nTrialsTooltip" class="tooltip-box">
+                            Jumlah total percobaan independen yang dilakukan.
+                            Contoh: Jika melempar koin 10 kali, maka n = 10.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kSuccesses" class="form-label">
+                            k (Jumlah Keberhasilan):
+                            <span class="info-icon" onclick="showTooltip('kSuccesses')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="kSuccesses">
+                        <div id="kSuccessesTooltip" class="tooltip-box">
+                            Jumlah keberhasilan yang ingin dihitung peluangnya. Harus antara 0 dan n.
+                            Contoh: Jika ingin menghitung peluang tepat 3 kepala dari 10 lemparan, maka k = 3.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pProbability" class="form-label">
+                            p (Peluang Keberhasilan):
+                            <span class="info-icon" onclick="showTooltip('pProbability')">ⓘ</span>
+                        </label>
+                        <input type="number" class="form-control" id="pProbability" step="0.01" min="0" max="1">
+                        <div id="pProbabilityTooltip" class="tooltip-box">
+                            Peluang keberhasilan dalam satu percobaan. Harus antara 0 dan 1.
+                            Contoh: Untuk koin seimbang, p = 0.5; untuk dadu peluang muncul 6 adalah 1/6 ≈ 0.1667.
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-success" onclick="calculateProbability()">
+                    <i class="bi bi-calculator"></i> Hitung
+                </button>
+                
+                <div class="results mt-3">
+                    <h5><i class="bi bi-clipboard-data"></i> Hasil:</h5>
+                    <p>Peluang: <span id="probabilityResult">-</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan field yang sesuai dengan jenis perhitungan peluang
+        function showProbabilityFields() {
+            const probabilityType = document.getElementById('probabilityType').value;
+            
+            // Sembunyikan semua field terlebih dahulu
+            document.querySelectorAll('.probability-fields').forEach(field => {
+                field.classList.add('d-none');
+            });
+            
+            // Tampilkan field yang sesuai
+            document.getElementById(`${probabilityType}Fields`).classList.remove('d-none');
+        }
+
+        // Fungsi untuk menampilkan tooltip
+        function showTooltip(type) {
+            // Sembunyikan semua tooltip terlebih dahulu
+            document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+                tooltip.classList.remove('show');
+            });
+            
+            // Tampilkan tooltip yang dipilih
+            const tooltip = document.getElementById(`${type}Tooltip`);
+            if (tooltip) {
+                tooltip.classList.add('show');
+                
+                // Sembunyikan tooltip saat klik di luar
+                setTimeout(() => {
+                    const clickHandler = function(e) {
+                        if (!tooltip.contains(e.target) && !e.target.classList.contains('info-icon')) {
+                            tooltip.classList.remove('show');
+                            document.removeEventListener('click', clickHandler);
+                        }
+                    };
+                    document.addEventListener('click', clickHandler);
+                }, 10);
+            }
+        }
+
+        // Fungsi untuk menampilkan error message
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            const errorId = 'error-' + Date.now();
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.id = errorId;
+            errorDiv.className = 'error-message alert alert-danger d-flex align-items-center';
+            errorDiv.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill error-icon"></i>
+                <div>${message}</div>
+            `;
+            
+            errorContainer.appendChild(errorDiv);
+            
+            // Hapus error message setelah 3 detik
+            setTimeout(() => {
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.style.opacity = '0';
+                    setTimeout(() => errorElement.remove(), 500);
+                }
+            }, 3000);
+        }
+
+        // Fungsi untuk menghitung faktorial
+        function factorial(n) {
+            if (n < 0) return NaN;
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        // Fungsi untuk menghitung peluang
+        function calculateProbability() {
+            const probabilityType = document.getElementById('probabilityType').value;
+            let result;
+            
+            try {
+                switch(probabilityType) {
+                    case 'basic':
+                        const favorable = parseInt(document.getElementById('favorableOutcomes').value);
+                        const total = parseInt(document.getElementById('totalOutcomes').value);
+                        
+                        if (isNaN(favorable)) throw new Error('Kejadian yang Menguntungkan harus berupa angka');
+                        if (isNaN(total)) throw new Error('Total Kemungkinan harus berupa angka');
+                        if (favorable <= 0) throw new Error('Kejadian yang Menguntungkan harus lebih besar dari 0');
+                        if (total <= 0) throw new Error('Total Kemungkinan harus lebih besar dari 0');
+                        if (favorable > total) throw new Error('Kejadian yang Menguntungkan tidak boleh lebih besar dari Total Kemungkinan');
+                        
+                        result = (favorable / total).toFixed(4);
+                        break;
+                        
+                    case 'permutation':
+                        const nPerm = parseInt(document.getElementById('nPermutation').value);
+                        const rPerm = parseInt(document.getElementById('rPermutation').value);
+                        
+                        if (isNaN(nPerm)) throw new Error('n harus berupa angka');
+                        if (isNaN(rPerm)) throw new Error('r harus berupa angka');
+                        if (nPerm <= 0) throw new Error('n harus lebih besar dari 0');
+                        if (rPerm <= 0) throw new Error('r harus lebih besar dari 0');
+                        if (rPerm > nPerm) throw new Error('r tidak boleh lebih besar dari n');
+                        
+                        result = (factorial(nPerm) / factorial(nPerm - rPerm)).toString();
+                        break;
+                        
+                    case 'combination':
+                        const nComb = parseInt(document.getElementById('nCombination').value);
+                        const rComb = parseInt(document.getElementById('rCombination').value);
+                        
+                        if (isNaN(nComb)) throw new Error('n harus berupa angka');
+                        if (isNaN(rComb)) throw new Error('r harus berupa angka');
+                        if (nComb <= 0) throw new Error('n harus lebih besar dari 0');
+                        if (rComb <= 0) throw new Error('r harus lebih besar dari 0');
+                        if (rComb > nComb) throw new Error('r tidak boleh lebih besar dari n');
+                        
+                        result = (factorial(nComb) / (factorial(rComb) * factorial(nComb - rComb))).toString();
+                        break;
+                        
+                    case 'binomial':
+                        const n = parseInt(document.getElementById('nTrials').value);
+                        const k = parseInt(document.getElementById('kSuccesses').value);
+                        const p = parseFloat(document.getElementById('pProbability').value);
+                        
+                        if (isNaN(n)) throw new Error('n harus berupa angka');
+                        if (isNaN(k)) throw new Error('k harus berupa angka');
+                        if (isNaN(p)) throw new Error('p harus berupa angka');
+                        if (n <= 0) throw new Error('n harus lebih besar dari 0');
+                        if (k < 0) throw new Error('k tidak boleh negatif');
+                        if (k > n) throw new Error('k tidak boleh lebih besar dari n');
+                        if (p < 0) throw new Error('p tidak boleh negatif');
+                        if (p > 1) throw new Error('p tidak boleh lebih besar dari 1');
+                        
+                        const combination = factorial(n) / (factorial(k) * factorial(n - k));
+                        result = (combination * Math.pow(p, k) * Math.pow(1 - p, n - k)).toFixed(6);
+                        break;
+                        
+                    default:
+                        result = 'Pilih jenis perhitungan terlebih dahulu';
+                }
+                
+                document.getElementById('probabilityResult').textContent = result;
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('probabilityResult').textContent = '-';
+            }
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            showProbabilityFields();
+        });
+    </script>
+</body>
+</html>
