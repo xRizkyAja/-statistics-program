@@ -204,3 +204,23 @@ function createChart(data) {
 document.addEventListener('DOMContentLoaded', function() {
     showProbabilityFields();
 });
+function showTooltip(type) {
+    // Sembunyikan semua tooltip terlebih dahulu
+    document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+        tooltip.classList.remove('show');
+    });
+    
+    // Tampilkan tooltip yang dipilih
+    const tooltip = document.getElementById(`${type}Tooltip`);
+    tooltip.classList.toggle('show');
+    
+    // Sembunyikan tooltip saat klik di luar
+    setTimeout(() => {
+        document.addEventListener('click', function hideTooltip(e) {
+            if (!tooltip.contains(e.target) {
+                tooltip.classList.remove('show');
+                document.removeEventListener('click', hideTooltip);
+            }
+        });
+    }, 10);
+}
