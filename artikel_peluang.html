@@ -20,10 +20,54 @@
         .probability-btn:hover {
             background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
         }
-        .tab-active {
-            border-bottom: 3px solid #667eea;
-            color: #667eea;
-            font-weight: 600;
+        .venn-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        .venn-a {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            top: 40px;
+            left: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .venn-b {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(75, 192, 192, 0.5);
+            border-radius: 50%;
+            top: 40px;
+            left: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .venn-intersection {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(153, 102, 255, 0.7);
+            border-radius: 50%;
+            top: 70px;
+            left: 135px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -202,27 +246,30 @@
                 <!-- Chart Peluang Dadu -->
                 <div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Distribusi Peluang Lemparan Dadu</h3>
-                    <canvas id="diceChart" height="300"></canvas>
-                    <p class="text-gray-600 text-sm mt-4">Grafik menunjukkan peluang klasik untuk setiap hasil ketika melempar dadu 6 sisi seimbang.</p>
+                    <div class="w-full h-64">
+                        <canvas id="diceChart"></canvas>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-4">Grafik menunjukkan peluang klasik untuk setiap hasil ketika melempar dadu 6 sisi seimbang. Setiap angka (1-6) memiliki peluang yang sama yaitu 1/6 ≈ 16.67%.</p>
                 </div>
                 
                 <!-- Diagram Venn -->
                 <div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Diagram Venn Peluang</h3>
-                    <div class="flex justify-center">
-                        <div id="vennDiagram" class="relative w-64 h-64">
-                            <div class="absolute w-32 h-32 bg-blue-400 opacity-50 rounded-full top-8 left-4 flex items-center justify-center text-white font-bold">A</div>
-                            <div class="absolute w-32 h-32 bg-green-400 opacity-50 rounded-full top-8 right-4 flex items-center justify-center text-white font-bold">B</div>
-                            <div class="absolute w-12 h-12 bg-purple-600 opacity-70 rounded-full top-16 left-26 flex items-center justify-center text-white font-bold text-sm">A∩B</div>
-                        </div>
+                    <div class="venn-container">
+                        <div class="venn-a">A</div>
+                        <div class="venn-b">B</div>
+                        <div class="venn-intersection">A∩B</div>
                     </div>
                     <div class="mt-4 text-gray-700">
                         <p>Diagram Venn membantu memvisualisasikan hubungan antara peristiwa:</p>
                         <ul class="list-disc pl-5 mt-2 space-y-1">
-                            <li>Daerah biru: Peluang A</li>
-                            <li>Daerah hijau: Peluang B</li>
-                            <li>Daerah ungu: Peluang A dan B terjadi bersama</li>
+                            <li>Daerah biru: Peluang A (P(A))</li>
+                            <li>Daerah hijau: Peluang B (P(B))</li>
+                            <li>Daerah ungu: Peluang A dan B terjadi bersama (P(A∩B))</li>
                         </ul>
+                        <div class="mt-3 bg-indigo-50 p-3 rounded-lg">
+                            <p class="text-indigo-800 text-sm"><strong>Contoh:</strong> Jika A = peluang terambil kartu hati, B = peluang terambil kartu bergambar, maka A∩B = peluang terambil kartu hati yang bergambar.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -249,7 +296,7 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <button onclick="showSolution(1)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
-                                <div id="solution1" class="hidden bg-gray-50 p-4 rounded-lg">
+                                <div id="solution1" class="bg-gray-50 p-4 rounded-lg hidden">
                                     <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung total bola</p>
                                     <p class="text-gray-700 mb-2">Total = 4 (merah) + 3 (hijau) + 3 (biru) = 10 bola</p>
                                     <p class="text-gray-700 mb-2"><strong>Langkah 2:</strong> Hitung peluang</p>
@@ -258,7 +305,7 @@
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
-                                <p class="text-yellow-700" id="answer1">Peluang terambil bola merah adalah 0.4 atau 40%.</p>
+                                <p class="text-yellow-700">Peluang terambil bola merah adalah 0.4 atau 40%.</p>
                             </div>
                         </div>
                     </div>
@@ -271,7 +318,7 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <button onclick="showSolution(2)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
-                                <div id="solution2" class="hidden bg-gray-50 p-4 rounded-lg">
+                                <div id="solution2" class="bg-gray-50 p-4 rounded-lg hidden">
                                     <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung masing-masing peluang</p>
                                     <p class="text-gray-700 mb-1">P(hati) = 13/52</p>
                                     <p class="text-gray-700 mb-1">P(gambar) = 12/52 (ada 3 gambar × 4 jenis)</p>
@@ -283,7 +330,7 @@
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
-                                <p class="text-yellow-700" id="answer2">Peluangnya adalah 22/52 atau sekitar 42.31%.</p>
+                                <p class="text-yellow-700">Peluangnya adalah 22/52 atau sekitar 42.31%.</p>
                             </div>
                         </div>
                     </div>
@@ -296,7 +343,7 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
                                 <button onclick="showSolution(3)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
-                                <div id="solution3" class="hidden bg-gray-50 p-4 rounded-lg">
+                                <div id="solution3" class="bg-gray-50 p-4 rounded-lg hidden">
                                     <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung peluang bola pertama merah</p>
                                     <p class="text-gray-700 mb-2">P(merah pertama) = 5/8</p>
                                     <p class="text-gray-700 mb-2"><strong>Langkah 2:</strong> Hitung peluang bola kedua merah jika pertama merah</p>
@@ -307,147 +354,10 @@
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
-                                <p class="text-yellow-700" id="answer3">Peluangnya adalah 20/56 atau sekitar 35.71%.</p>
+                                <p class="text-yellow-700">Peluangnya adalah 20/56 atau sekitar 35.71%.</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Kalkulator Peluang -->
-        <section class="mb-16 bg-indigo-50 rounded-xl shadow-md overflow-hidden transition-all card-hover">
-            <div class="p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                    <span class="bg-indigo-200 text-indigo-700 p-2 rounded-full mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
-                    </span>
-                    Kalkulator Peluang Dasar
-                </h2>
-                
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Single Probability -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang Tunggal</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah hasil sukses</label>
-                                <input type="number" id="successOutcomes" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Total hasil mungkin</label>
-                                <input type="number" id="totalOutcomes" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </div>
-                            <button onclick="calculateSingleProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung Peluang</button>
-                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="singleProbResult">
-                                <p class="font-medium">Peluang: <span id="singleProbValue"></span></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Combined OR Probability -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang A ATAU B</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A)</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probA" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B)</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probB" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A dan B) - opsional</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probAandB" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika saling lepas">
-                            </div>
-                            <button onclick="calculateOrProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung P(A atau B)</button>
-                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="orProbResult">
-                                <p class="font-medium">P(A atau B): <span id="orProbValue"></span></p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Combined AND Probability -->
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang A DAN B</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A)</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probA2" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B|A) - jika dependen</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probBgivenA" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika independen">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B) - jika independen</label>
-                                <input type="number" step="0.01" min="0" max="1" id="probB2" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika dependen">
-                            </div>
-                            <button onclick="calculateAndProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung P(A dan B)</button>
-                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="andProbResult">
-                                <p class="font-medium">P(A dan B): <span id="andProbValue"></span></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Kuis Interaktif -->
-        <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
-            <div class="p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                    <span class="bg-indigo-100 text-indigo-600 p-2 rounded-full mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </span>
-                    Kuis Pemahaman Peluang
-                </h2>
-                
-                <div class="space-y-8">
-                    <!-- Question 1 -->
-                    <div class="border-b pb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1. Jika sebuah dadu dilempar, berapa peluang munculnya angka genap?</h3>
-                        <div class="grid md:grid-cols-2 gap-3">
-                            <button onclick="checkAnswer(1, this, '1/2')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/2</button>
-                            <button onclick="checkAnswer(1, this, '1/3')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/3</button>
-                            <button onclick="checkAnswer(1, this, '1/6')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/6</button>
-                            <button onclick="checkAnswer(1, this, '2/3')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">2/3</button>
-                        </div>
-                        <div id="feedback1" class="mt-3 hidden p-3 rounded-lg"></div>
-                    </div>
-                    
-                    <!-- Question 2 -->
-                    <div class="border-b pb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2. Dalam set kartu remi (52 kartu), berapa peluang terambil kartu As atau King?</h3>
-                        <div class="grid md:grid-cols-2 gap-3">
-                            <button onclick="checkAnswer(2, this, '2/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">2/13</button>
-                            <button onclick="checkAnswer(2, this, '1/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/13</button>
-                            <button onclick="checkAnswer(2, this, '4/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">4/13</button>
-                            <button onclick="checkAnswer(2, this, '8/52')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">8/52</button>
-                        </div>
-                        <div id="feedback2" class="mt-3 hidden p-3 rounded-lg"></div>
-                    </div>
-                    
-                    <!-- Question 3 -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">3. Jika peluang hujan besok adalah 0.4 dan peluang Anda lupa membawa payung adalah 0.3 (independen terhadap hujan), berapa peluang besok hujan DAN Anda lupa payung?</h3>
-                        <div class="grid md:grid-cols-2 gap-3">
-                            <button onclick="checkAnswer(3, this, '0.12')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.12</button>
-                            <button onclick="checkAnswer(3, this, '0.7')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.7</button>
-                            <button onclick="checkAnswer(3, this, '0.58')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.58</button>
-                            <button onclick="checkAnswer(3, this, '0.1')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.1</button>
-                        </div>
-                        <div id="feedback3" class="mt-3 hidden p-3 rounded-lg"></div>
-                    </div>
-                </div>
-                
-                <div class="mt-8 p-4 bg-gray-100 rounded-lg hidden" id="quizResult">
-                    <p class="font-medium">Skor Anda: <span id="quizScore">0</span>/3</p>
                 </div>
             </div>
         </section>
@@ -476,147 +386,11 @@
             solution.classList.toggle('hidden');
         }
 
-        // Fungsi kalkulator peluang
-        function calculateSingleProbability() {
-            const success = parseFloat(document.getElementById('successOutcomes').value);
-            const total = parseFloat(document.getElementById('totalOutcomes').value);
-            
-            if (isNaN(success) {
-                alert('Masukkan jumlah hasil sukses yang valid');
-                return;
-            }
-            
-            if (isNaN(total) || total === 0) {
-                alert('Masukkan total hasil mungkin yang valid (tidak boleh 0)');
-                return;
-            }
-            
-            if (success > total) {
-                alert('Jumlah hasil sukses tidak boleh lebih besar dari total hasil mungkin');
-                return;
-            }
-            
-            const probability = success / total;
-            const resultDiv = document.getElementById('singleProbResult');
-            const resultValue = document.getElementById('singleProbValue');
-            
-            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
-            resultDiv.classList.remove('hidden');
-        }
-        
-        function calculateOrProbability() {
-            const probA = parseFloat(document.getElementById('probA').value);
-            const probB = parseFloat(document.getElementById('probB').value);
-            const probAandB = parseFloat(document.getElementById('probAandB').value) || 0;
-            
-            if (isNaN(probA) || isNaN(probB)) {
-                alert('Masukkan nilai P(A) dan P(B) yang valid');
-                return;
-            }
-            
-            if (probA < 0 || probA > 1 || probB < 0 || probB > 1 || probAandB < 0 || probAandB > 1) {
-                alert('Nilai peluang harus antara 0 dan 1');
-                return;
-            }
-            
-            if (probAandB > Math.min(probA, probB)) {
-                alert('P(A dan B) tidak boleh lebih besar dari P(A) atau P(B)');
-                return;
-            }
-            
-            const probability = probA + probB - probAandB;
-            const resultDiv = document.getElementById('orProbResult');
-            const resultValue = document.getElementById('orProbValue');
-            
-            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
-            resultDiv.classList.remove('hidden');
-        }
-        
-        function calculateAndProbability() {
-            const probA = parseFloat(document.getElementById('probA2').value);
-            const probBgivenA = parseFloat(document.getElementById('probBgivenA').value);
-            const probB = parseFloat(document.getElementById('probB2').value);
-            
-            if (isNaN(probA)) {
-                alert('Masukkan nilai P(A) yang valid');
-                return;
-            }
-            
-            if (probA < 0 || probA > 1) {
-                alert('Nilai P(A) harus antara 0 dan 1');
-                return;
-            }
-            
-            let probability;
-            
-            if (!isNaN(probBgivenA)) { // Dependen
-                if (probBgivenA < 0 || probBgivenA > 1) {
-                    alert('Nilai P(B|A) harus antara 0 dan 1');
-                    return;
-                }
-                probability = probA * probBgivenA;
-            } else if (!isNaN(probB)) { // Independen
-                if (probB < 0 || probB > 1) {
-                    alert('Nilai P(B) harus antara 0 dan 1');
-                    return;
-                }
-                probability = probA * probB;
-            } else {
-                alert('Masukkan nilai P(B|A) untuk peristiwa dependen atau P(B) untuk independen');
-                return;
-            }
-            
-            const resultDiv = document.getElementById('andProbResult');
-            const resultValue = document.getElementById('andProbValue');
-            
-            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
-            resultDiv.classList.remove('hidden');
-        }
-
-        // Fungsi kuis
-        let score = 0;
-        
-        function checkAnswer(questionNum, button, correctAnswer) {
-            const feedbackDiv = document.getElementById(`feedback${questionNum}`);
-            const userAnswer = button.textContent.trim();
-            
-            // Reset semua opsi untuk pertanyaan ini
-            const allOptions = document.querySelectorAll(`.quiz-option`);
-            allOptions.forEach(opt => {
-                opt.classList.remove('bg-green-100', 'border-green-400', 'bg-red-100', 'border-red-400');
-            });
-            
-            if (userAnswer === correctAnswer) {
-                button.classList.add('bg-green-100', 'border-green-400');
-                feedbackDiv.innerHTML = `<p class="text-green-700">✅ Benar! ${getExplanation(questionNum)}</p>`;
-                score++;
-            } else {
-                button.classList.add('bg-red-100', 'border-red-400');
-                feedbackDiv.innerHTML = `<p class="text-red-700">❌ Salah. Jawaban benar adalah ${correctAnswer}. ${getExplanation(questionNum)}</p>`;
-            }
-            
-            feedbackDiv.classList.remove('hidden');
-            
-            // Update skor
-            document.getElementById('quizScore').textContent = score;
-            if (score > 0) {
-                document.getElementById('quizResult').classList.remove('hidden');
-            }
-        }
-        
-        function getExplanation(questionNum) {
-            const explanations = {
-                1: "Angka genap pada dadu adalah 2, 4, 6 (3 kemungkinan). Total hasil adalah 6. Jadi peluangnya 3/6 = 1/2.",
-                2: "Ada 4 As dan 4 King dalam set kartu remi (total 8). Peluangnya 8/52 = 2/13.",
-                3: "Karena peristiwa independen, P(hujan dan lupa payung) = P(hujan) × P(lupa payung) = 0.4 × 0.3 = 0.12."
-            };
-            return explanations[questionNum];
-        }
-
-        // Chart.js untuk visualisasi peluang dadu
+        // Inisialisasi grafik peluang dadu saat dokumen siap
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('diceChart').getContext('2d');
-            const diceChart = new Chart(ctx, {
+            // Grafik distribusi peluang dadu
+            const diceCtx = document.getElementById('diceChart').getContext('2d');
+            const diceChart = new Chart(diceCtx, {
                 type: 'bar',
                 data: {
                     labels: ['1', '2', '3', '4', '5', '6'],
@@ -644,6 +418,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -651,20 +426,29 @@
                             title: {
                                 display: true,
                                 text: 'Peluang'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return (value * 100).toFixed(0) + '%';
+                                }
                             }
                         },
                         x: {
                             title: {
                                 display: true,
-                                text: 'Hasil Lemparan Dadu'
+                                text: 'Angka Dadu'
                             }
                         }
                     },
                     plugins: {
+                        legend: {
+                            display: false
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `Peluang: ${(context.raw*100).toFixed(2)}%`;
+                                    const value = context.raw;
+                                    return `Peluang: ${(value * 100).toFixed(2)}%`;
                                 }
                             }
                         }
