@@ -39,15 +39,7 @@ body {
     height: auto !important;
 }
 
-@media (max-width: 768px) {
-    .row {
-        flex-direction: column;
-    }
-    
-    .col-md-6 {
-        width: 100%;
-    }
-}
+/* Gaya untuk tooltip */
 .info-icon {
     cursor: pointer;
     color: #0d6efd;
@@ -82,4 +74,14 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+    
+    .col-md-6 {
+        width: 100%;
+    }
 }
