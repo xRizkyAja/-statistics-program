@@ -4,8 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Statistika</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-header {
+            font-weight: bold;
+        }
+        .probability-fields {
+            transition: all 0.3s ease;
+        }
+        .results {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .btn {
+            font-weight: bold;
+            padding: 8px 20px;
+        }
+        #dataChart {
+            width: 100% !important;
+            height: auto !important;
+        }
+        /* Gaya untuk tooltip */
+        .info-icon {
+            cursor: pointer;
+            color: #0d6efd;
+            font-weight: bold;
+            margin-left: 5px;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            text-align: center;
+            line-height: 18px;
+            border-radius: 50%;
+            background-color: #e9f0ff;
+        }
+        .tooltip-box {
+            display: none;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #495057;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .tooltip-box.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            .col-md-6 {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -139,6 +214,236 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Fungsi untuk menampilkan field yang sesuai dengan jenis perhitungan peluang
+        function showProbabilityFields() {
+            const probabilityType = document.getElementById('probabilityType').value;
+            
+            // Sembunyikan semua field terlebih dahulu
+            document.querySelectorAll('.probability-fields').forEach(field => {
+                field.classList.add('d-none');
+            });
+            
+            // Tampilkan field yang sesuai
+            document.getElementById(`${probabilityType}Fields`).classList.remove('d-none');
+        }
+
+        // Fungsi untuk menampilkan tooltip
+        function showTooltip(type) {
+            // Sembunyikan semua tooltip terlebih dahulu
+            document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+                tooltip.classList.remove('show');
+            });
+            
+            // Tampilkan tooltip yang dipilih
+            const tooltip = document.getElementById(`${type}Tooltip`);
+            tooltip.classList.add('show');
+            
+            // Sembunyikan tooltip saat klik di luar
+            setTimeout(() => {
+                const clickHandler = function(e) {
+                    if (!tooltip.contains(e.target) && e.target.className !== 'info-icon') {
+                        tooltip.classList.remove('show');
+                        document.removeEventListener('click', clickHandler);
+                    }
+                };
+                document.addEventListener('click', clickHandler);
+            }, 10);
+        }
+
+        // Fungsi untuk menghitung ukuran pemusatan data
+        function calculateCentralTendency() {
+            const dataInput = document.getElementById('dataInput').value;
+            const dataArray = dataInput.split(',').map(item => parseFloat(item.trim())).filter(item => !isNaN(item));
+            
+            if (dataArray.length === 0) {
+                alert('Masukkan data yang valid!');
+                return;
+            }
+            
+            // Hitung mean
+            const mean = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+            
+            // Hitung median
+            const sortedData = [...dataArray].sort((a, b) => a - b);
+            let median;
+            if (sortedData.length % 2 === 0) {
+                median = (sortedData[sortedData.length/2 - 1] + sortedData[sortedData.length/2]) / 2;
+            } else {
+                median = sortedData[Math.floor(sortedData.length/2)];
+            }
+            
+            // Hitung modus
+            const frequencyMap = {};
+            sortedData.forEach(num => {
+                frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+            });
+            
+            let maxFrequency = 0;
+            let modes = [];
+            for (const num in frequencyMap) {
+                if (frequencyMap[num] > maxFrequency) {
+                    modes = [num];
+                    maxFrequency = frequencyMap[num];
+                } else if (frequencyMap[num] === maxFrequency) {
+                    modes.push(num);
+                }
+            }
+            
+            const mode = maxFrequency > 1 ? modes.join(', ') : 'Tidak ada modus';
+            
+            // Hitung range
+            const range = Math.max(...sortedData) - Math.min(...sortedData);
+            
+            // Hitung varians
+            const squaredDifferences = dataArray.map(num => Math.pow(num - mean, 2));
+            const variance = squaredDifferences.reduce((sum, val) => sum + val, 0) / dataArray.length;
+            
+            // Hitung standar deviasi
+            const stdDev = Math.sqrt(variance);
+            
+            // Tampilkan hasil
+            document.getElementById('meanResult').textContent = mean.toFixed(2);
+            document.getElementById('medianResult').textContent = median.toFixed(2);
+            document.getElementById('modeResult').textContent = mode;
+            document.getElementById('rangeResult').textContent = range.toFixed(2);
+            document.getElementById('varianceResult').textContent = variance.toFixed(2);
+            document.getElementById('stdDevResult').textContent = stdDev.toFixed(2);
+            
+            // Buat visualisasi data
+            createChart(sortedData);
+        }
+
+        // Fungsi untuk menghitung faktorial
+        function factorial(n) {
+            if (n < 0) return NaN;
+            if (n === 0 || n === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+
+        // Fungsi untuk menghitung peluang
+        function calculateProbability() {
+            const probabilityType = document.getElementById('probabilityType').value;
+            let result;
+            
+            try {
+                switch(probabilityType) {
+                    case 'basic':
+                        const favorable = parseInt(document.getElementById('favorableOutcomes').value);
+                        const total = parseInt(document.getElementById('totalOutcomes').value);
+                        
+                        if (favorable <= 0 || total <= 0 || favorable > total) {
+                            throw new Error('Input tidak valid');
+                        }
+                        
+                        result = (favorable / total).toFixed(4);
+                        break;
+                        
+                    case 'permutation':
+                        const nPerm = parseInt(document.getElementById('nPermutation').value);
+                        const rPerm = parseInt(document.getElementById('rPermutation').value);
+                        
+                        if (nPerm <= 0 || rPerm <= 0 || rPerm > nPerm) {
+                            throw new Error('Input tidak valid');
+                        }
+                        
+                        result = (factorial(nPerm) / factorial(nPerm - rPerm)).toString();
+                        break;
+                        
+                    case 'combination':
+                        const nComb = parseInt(document.getElementById('nCombination').value);
+                        const rComb = parseInt(document.getElementById('rCombination').value);
+                        
+                        if (nComb <= 0 || rComb <= 0 || rComb > nComb) {
+                            throw new Error('Input tidak valid');
+                        }
+                        
+                        result = (factorial(nComb) / (factorial(rComb) * factorial(nComb - rComb))).toString();
+                        break;
+                        
+                    case 'binomial':
+                        const n = parseInt(document.getElementById('nTrials').value);
+                        const k = parseInt(document.getElementById('kSuccesses').value);
+                        const p = parseFloat(document.getElementById('pProbability').value);
+                        
+                        if (n <= 0 || k < 0 || k > n || p < 0 || p > 1) {
+                            throw new Error('Input tidak valid');
+                        }
+                        
+                        const combination = factorial(n) / (factorial(k) * factorial(n - k));
+                        result = (combination * Math.pow(p, k) * Math.pow(1 - p, n - k)).toFixed(6);
+                        break;
+                        
+                    default:
+                        result = 'Pilih jenis perhitungan terlebih dahulu';
+                }
+                
+                document.getElementById('probabilityResult').textContent = result;
+            } catch (error) {
+                alert(error.message);
+                document.getElementById('probabilityResult').textContent = '-';
+            }
+        }
+
+        // Fungsi untuk membuat chart visualisasi data
+        function createChart(data) {
+            const ctx = document.getElementById('dataChart').getContext('2d');
+            
+            // Hancurkan chart sebelumnya jika ada
+            if (window.dataChart) {
+                window.dataChart.destroy();
+            }
+            
+            // Hitung frekuensi untuk histogram
+            const frequencyMap = {};
+            data.forEach(num => {
+                frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+            });
+            
+            const labels = Object.keys(frequencyMap);
+            const frequencies = Object.values(frequencyMap);
+            
+            window.dataChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frekuensi Data',
+                        data: frequencies,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frekuensi'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Nilai Data'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            showProbabilityFields();
+        });
+    </script>
 </body>
 </html>
