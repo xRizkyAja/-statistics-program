@@ -43,32 +43,6 @@
                         <h3>Peluang</h3>
                     </div>
                     <div class="card-body">
-                        <div id="basicFields" class="probability-fields">
-    <div class="mb-3">
-        <label for="favorableOutcomes" class="form-label">
-            Kejadian yang Menguntungkan:
-            <span class="info-icon" onclick="showTooltip('favorable')">ⓘ</span>
-        </label>
-        <input type="number" class="form-control" id="favorableOutcomes">
-        <div id="favorableTooltip" class="tooltip-box">
-            Jumlah hasil/cara yang diinginkan atau sesuai dengan kriteria kejadian. 
-            Contoh: Pada dadu, kejadian muncul angka genap memiliki 3 kejadian 
-            menguntungkan (2, 4, 6).
-        </div>
-    </div>
-    <div class="mb-3">
-        <label for="totalOutcomes" class="form-label">
-            Total Kemungkinan:
-            <span class="info-icon" onclick="showTooltip('total')">ⓘ</span>
-        </label>
-        <input type="number" class="form-control" id="totalOutcomes">
-        <div id="totalTooltip" class="tooltip-box">
-            Jumlah semua hasil yang mungkin terjadi dalam suatu eksperimen. 
-            Contoh: Pada dadu standar ada 6 kemungkinan (1-6), pada koin ada 
-            2 kemungkinan (kepala/ekor).
-        </div>
-    </div>
-</div>
                         <div class="mb-3">
                             <label class="form-label">Jenis Perhitungan:</label>
                             <select class="form-select" id="probabilityType" onchange="showProbabilityFields()">
@@ -81,12 +55,28 @@
                         
                         <div id="basicFields" class="probability-fields">
                             <div class="mb-3">
-                                <label for="favorableOutcomes" class="form-label">Kejadian yang Menguntungkan:</label>
+                                <label for="favorableOutcomes" class="form-label">
+                                    Kejadian yang Menguntungkan:
+                                    <span class="info-icon" onclick="showTooltip('favorable')">ⓘ</span>
+                                </label>
                                 <input type="number" class="form-control" id="favorableOutcomes">
+                                <div id="favorableTooltip" class="tooltip-box">
+                                    Jumlah hasil/cara yang diinginkan atau sesuai dengan kriteria kejadian. 
+                                    Contoh: Pada dadu, kejadian muncul angka genap memiliki 3 kejadian 
+                                    menguntungkan (2, 4, 6).
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="totalOutcomes" class="form-label">Total Kemungkinan:</label>
+                                <label for="totalOutcomes" class="form-label">
+                                    Total Kemungkinan:
+                                    <span class="info-icon" onclick="showTooltip('total')">ⓘ</span>
+                                </label>
                                 <input type="number" class="form-control" id="totalOutcomes">
+                                <div id="totalTooltip" class="tooltip-box">
+                                    Jumlah semua hasil yang mungkin terjadi dalam suatu eksperimen. 
+                                    Contoh: Pada dadu standar ada 6 kemungkinan (1-6), pada koin ada 
+                                    2 kemungkinan (kepala/ekor).
+                                </div>
                             </div>
                         </div>
                         
