@@ -11,6 +11,28 @@ function showProbabilityFields() {
     document.getElementById(`${probabilityType}Fields`).classList.remove('d-none');
 }
 
+// Fungsi untuk menampilkan tooltip
+function showTooltip(type) {
+    // Sembunyikan semua tooltip terlebih dahulu
+    document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+        tooltip.classList.remove('show');
+    });
+    
+    // Tampilkan tooltip yang dipilih
+    const tooltip = document.getElementById(`${type}Tooltip`);
+    tooltip.classList.toggle('show');
+    
+    // Sembunyikan tooltip saat klik di luar
+    setTimeout(() => {
+        document.addEventListener('click', function hideTooltip(e) {
+            if (!tooltip.contains(e.target) {
+                tooltip.classList.remove('show');
+                document.removeEventListener('click', hideTooltip);
+            }
+        });
+    }, 10);
+}
+
 // Fungsi untuk menghitung ukuran pemusatan data
 function calculateCentralTendency() {
     const dataInput = document.getElementById('dataInput').value;
@@ -204,23 +226,3 @@ function createChart(data) {
 document.addEventListener('DOMContentLoaded', function() {
     showProbabilityFields();
 });
-function showTooltip(type) {
-    // Sembunyikan semua tooltip terlebih dahulu
-    document.querySelectorAll('.tooltip-box').forEach(tooltip => {
-        tooltip.classList.remove('show');
-    });
-    
-    // Tampilkan tooltip yang dipilih
-    const tooltip = document.getElementById(`${type}Tooltip`);
-    tooltip.classList.toggle('show');
-    
-    // Sembunyikan tooltip saat klik di luar
-    setTimeout(() => {
-        document.addEventListener('click', function hideTooltip(e) {
-            if (!tooltip.contains(e.target) {
-                tooltip.classList.remove('show');
-                document.removeEventListener('click', hideTooltip);
-            }
-        });
-    }, 10);
-}
