@@ -65,6 +65,7 @@
         #dataChart {
             width: 100% !important;
             height: auto !important;
+            min-height: 300px;
         }
         
         /* Gaya untuk tooltip */
@@ -351,13 +352,16 @@
                 <h3><i class="bi bi-bar-chart-line"></i> Visualisasi Data</h3>
             </div>
             <div class="card-body">
-                <canvas id="dataChart" height="200"></canvas>
+                <canvas id="dataChart" height="300"></canvas>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Variabel global untuk chart
+        let dataChart = null;
+
         // Fungsi untuk menampilkan field yang sesuai dengan jenis perhitungan peluang
         function showProbabilityFields() {
             const probabilityType = document.getElementById('probabilityType').value;
@@ -575,8 +579,8 @@
             const ctx = document.getElementById('dataChart').getContext('2d');
             
             // Hancurkan chart sebelumnya jika ada
-            if (window.dataChart) {
-                window.dataChart.destroy();
+            if (dataChart) {
+                dataChart.destroy();
             }
             
             // Hitung frekuensi untuk histogram
@@ -588,7 +592,7 @@
             const labels = Object.keys(frequencyMap);
             const frequencies = Object.values(frequencyMap);
             
-            window.dataChart = new Chart(ctx, {
+            dataChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -602,6 +606,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true,
