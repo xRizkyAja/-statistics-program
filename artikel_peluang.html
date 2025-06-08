@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengenal Peluang dalam Statistika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        .probability-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .probability-btn:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+        .tab-active {
+            border-bottom: 3px solid #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Memahami Konsep <span class="text-indigo-600">Peluang</span> dalam Statistika</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Peluang adalah dasar dari analisis statistika yang membantu kita mengukur ketidakpastian dan membuat prediksi berdasarkan data.</p>
+        </header>
+
+        <!-- Pengertian Section -->
+        <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <span class="bg-indigo-100 text-indigo-600 p-2 rounded-full mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                    Apa Itu Peluang?
+                </h2>
+                <div class="text-gray-700 leading-relaxed space-y-4">
+                    <p>Dalam statistika, <strong class="text-indigo-600">peluang (probability)</strong> adalah ukuran numerik yang menyatakan kemungkinan suatu peristiwa (event) akan terjadi. Nilai peluang selalu berada antara 0 dan 1, dimana:</p>
+                    
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>0</strong> menunjukkan peristiwa yang <em>mustahil</em> terjadi</li>
+                        <li><strong>1</strong> menunjukkan peristiwa yang <em>pasti</em> terjadi</li>
+                        <li>Nilai di antaranya menunjukkan tingkat kemungkinan peristiwa tersebut terjadi</li>
+                    </ul>
+                    
+                    <p>Konsep peluang pertama kali dikembangkan pada abad ke-17 oleh Blaise Pascal dan Pierre de Fermat ketika mempelajari permainan judi. Sekarang, peluang menjadi fondasi penting dalam statistika, sains, ekonomi, dan banyak bidang lainnya.</p>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                        <p class="font-medium text-blue-800">Contoh sederhana:</p>
+                        <p>Peluang munculnya angka ketika melempar koin seimbang adalah 0.5 (atau 50%), karena ada dua kemungkinan hasil yang sama-sama mungkin: angka atau gambar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jenis-jenis Peluang Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center">Jenis-Jenis Pendekatan Peluang</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Klasik -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-indigo-100 text-indigo-600 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Peluang Klasik</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">Peluang dihitung berdasarkan asumsi bahwa semua hasil memiliki kemungkinan yang sama.</p>
+                        <p class="text-gray-600 text-sm"><strong>Rumus:</strong> P(A) = n(A) / n(S)</p>
+                        <p class="text-gray-600 text-sm">Dimana n(A) adalah jumlah hasil yang menguntungkan, dan n(S) adalah jumlah total hasil yang mungkin.</p>
+                        <div class="mt-4 bg-indigo-50 p-3 rounded-lg">
+                            <p class="text-indigo-800 text-sm"><strong>Contoh:</strong> Peluang munculnya angka 3 pada dadu = 1/6 ≈ 0.1667</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empiris -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 text-green-600 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Peluang Empiris</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">Peluang didasarkan pada pengamatan atau data eksperimen yang dikumpulkan melalui percobaan berulang.</p>
+                        <p class="text-gray-600 text-sm"><strong>Rumus:</strong> P(A) = f / n</p>
+                        <p class="text-gray-600 text-sm">Dimana f adalah frekuensi peristiwa A terjadi, dan n adalah jumlah total percobaan.</p>
+                        <div class="mt-4 bg-green-50 p-3 rounded-lg">
+                            <p class="text-green-800 text-sm"><strong>Contoh:</strong> Dari 1000 kelahiran di rumah sakit, 512 adalah bayi laki-laki. Peluang empiris kelahiran bayi laki-laki = 512/1000 = 0.512</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Subjektif -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Peluang Subjektif</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">Peluang berdasarkan keyakinan atau intuisi individu, sering digunakan ketika data terbatas atau tidak ada.</p>
+                        <p class="text-gray-600 text-sm"><strong>Ciri:</strong> Tidak memiliki rumus matematis formal, bergantung pada pengalaman dan penilaian pribadi.</p>
+                        <div class="mt-4 bg-yellow-50 p-3 rounded-lg">
+                            <p class="text-yellow-800 text-sm"><strong>Contoh:</strong> Seorang ahli cuaca mungkin mengatakan "Saya 80% yakin besok akan hujan" berdasarkan pengalaman dan data yang tidak lengkap.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aturan Dasar Section -->
+        <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-100 text-indigo-600 p-2 rounded-full mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </span>
+                    Aturan Dasar Peluang
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Aturan Penjumlahan -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Aturan Penjumlahan</h3>
+                        <p class="text-gray-700 mb-4">Digunakan untuk menghitung peluang terjadinya peristiwa A <strong>atau</strong> peristiwa B.</p>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <p class="font-medium text-gray-800 mb-2">Untuk peristiwa yang saling lepas (mutually exclusive):</p>
+                            <p class="text-gray-700 bg-white p-3 rounded">P(A atau B) = P(A) + P(B)</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-medium text-gray-800 mb-2">Untuk peristiwa yang tidak saling lepas:</p>
+                            <p class="text-gray-700 bg-white p-3 rounded">P(A atau B) = P(A) + P(B) - P(A dan B)</p>
+                        </div>
+                        
+                        <div class="mt-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                            <p class="font-medium text-blue-800">Contoh:</p>
+                            <p class="text-blue-700">Dalam satu set kartu remi, peluang terambil kartu hati atau raja:</p>
+                            <p class="text-blue-700">P(hati) = 13/52, P(raja) = 4/52, P(raja hati) = 1/52</p>
+                            <p class="text-blue-700 font-medium">P(hati atau raja) = 13/52 + 4/52 - 1/52 = 16/52 ≈ 0.3077</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Aturan Perkalian -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Aturan Perkalian</h3>
+                        <p class="text-gray-700 mb-4">Digunakan untuk menghitung peluang terjadinya peristiwa A <strong>dan</strong> peristiwa B.</p>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <p class="font-medium text-gray-800 mb-2">Untuk peristiwa bebas (independent):</p>
+                            <p class="text-gray-700 bg-white p-3 rounded">P(A dan B) = P(A) × P(B)</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-medium text-gray-800 mb-2">Untuk peristiwa tidak bebas (dependent):</p>
+                            <p class="text-gray-700 bg-white p-3 rounded">P(A dan B) = P(A) × P(B|A)</p>
+                            <p class="text-gray-600 text-sm mt-1">Dimana P(B|A) adalah peluang B terjadi jika A telah terjadi.</p>
+                        </div>
+                        
+                        <div class="mt-4 bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+                            <p class="font-medium text-green-800">Contoh:</p>
+                            <p class="text-green-700">Peluang terambil dua kartu As berturut-turut dari tumpukan kartu (tanpa pengembalian):</p>
+                            <p class="text-green-700">P(As pertama) = 4/52, P(As kedua|As pertama) = 3/51</p>
+                            <p class="text-green-700 font-medium">P(dua As) = (4/52) × (3/51) ≈ 0.0045</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualisasi Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center">Visualisasi Konsep Peluang</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Chart Peluang Dadu -->
+                <div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Distribusi Peluang Lemparan Dadu</h3>
+                    <canvas id="diceChart" height="300"></canvas>
+                    <p class="text-gray-600 text-sm mt-4">Grafik menunjukkan peluang klasik untuk setiap hasil ketika melempar dadu 6 sisi seimbang.</p>
+                </div>
+                
+                <!-- Diagram Venn -->
+                <div class="bg-white p-6 rounded-xl shadow-md transition-all card-hover">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Diagram Venn Peluang</h3>
+                    <div class="flex justify-center">
+                        <div id="vennDiagram" class="relative w-64 h-64">
+                            <div class="absolute w-32 h-32 bg-blue-400 opacity-50 rounded-full top-8 left-4 flex items-center justify-center text-white font-bold">A</div>
+                            <div class="absolute w-32 h-32 bg-green-400 opacity-50 rounded-full top-8 right-4 flex items-center justify-center text-white font-bold">B</div>
+                            <div class="absolute w-12 h-12 bg-purple-600 opacity-70 rounded-full top-16 left-26 flex items-center justify-center text-white font-bold text-sm">A∩B</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-gray-700">
+                        <p>Diagram Venn membantu memvisualisasikan hubungan antara peristiwa:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Daerah biru: Peluang A</li>
+                            <li>Daerah hijau: Peluang B</li>
+                            <li>Daerah ungu: Peluang A dan B terjadi bersama</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contoh Soal Interaktif -->
+        <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-100 text-indigo-600 p-2 rounded-full mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </span>
+                    Contoh Soal Interaktif
+                </h2>
+                
+                <div class="space-y-8">
+                    <!-- Soal 1 -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Soal 1: Peluang Klasik</h3>
+                        <p class="text-gray-700 mb-4">Sebuah kantong berisi 4 bola merah, 3 bola hijau, dan 3 bola biru. Jika satu bola diambil secara acak, berapa peluang terambilnya bola merah?</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <button onclick="showSolution(1)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
+                                <div id="solution1" class="hidden bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung total bola</p>
+                                    <p class="text-gray-700 mb-2">Total = 4 (merah) + 3 (hijau) + 3 (biru) = 10 bola</p>
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 2:</strong> Hitung peluang</p>
+                                    <p class="text-gray-700">P(merah) = jumlah bola merah / total bola = 4/10 = 0.4</p>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <p class="font-medium text-yellow-800">Jawaban:</p>
+                                <p class="text-yellow-700" id="answer1">Peluang terambil bola merah adalah 0.4 atau 40%.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Soal 2 -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Soal 2: Aturan Penjumlahan</h3>
+                        <p class="text-gray-700 mb-4">Dalam satu set kartu remi (52 kartu), berapa peluang terambil kartu hati atau kartu bergambar (J, Q, K)?</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <button onclick="showSolution(2)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
+                                <div id="solution2" class="hidden bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung masing-masing peluang</p>
+                                    <p class="text-gray-700 mb-1">P(hati) = 13/52</p>
+                                    <p class="text-gray-700 mb-1">P(gambar) = 12/52 (ada 3 gambar × 4 jenis)</p>
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 2:</strong> Hitung irisan (kartu hati yang bergambar)</p>
+                                    <p class="text-gray-700 mb-2">P(hati dan gambar) = 3/52 (J hati, Q hati, K hati)</p>
+                                    <p class="text-gray-700"><strong>Langkah 3:</strong> Gunakan aturan penjumlahan</p>
+                                    <p class="text-gray-700">P(hati atau gambar) = 13/52 + 12/52 - 3/52 = 22/52 ≈ 0.4231</p>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <p class="font-medium text-yellow-800">Jawaban:</p>
+                                <p class="text-yellow-700" id="answer2">Peluangnya adalah 22/52 atau sekitar 42.31%.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Soal 3 -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Soal 3: Aturan Perkalian</h3>
+                        <p class="text-gray-700 mb-4">Sebuah kotak berisi 5 bola merah dan 3 bola biru. Jika diambil 2 bola secara berurutan tanpa pengembalian, berapa peluang kedua bola berwarna merah?</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <button onclick="showSolution(3)" class="probability-btn text-white px-4 py-2 rounded-lg mb-3">Tunjukkan Penyelesaian</button>
+                                <div id="solution3" class="hidden bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 1:</strong> Hitung peluang bola pertama merah</p>
+                                    <p class="text-gray-700 mb-2">P(merah pertama) = 5/8</p>
+                                    <p class="text-gray-700 mb-2"><strong>Langkah 2:</strong> Hitung peluang bola kedua merah jika pertama merah</p>
+                                    <p class="text-gray-700 mb-2">P(merah kedua | merah pertama) = 4/7 (karena 1 bola merah sudah diambil)</p>
+                                    <p class="text-gray-700"><strong>Langkah 3:</strong> Gunakan aturan perkalian</p>
+                                    <p class="text-gray-700">P(kedua merah) = (5/8) × (4/7) = 20/56 ≈ 0.3571</p>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <p class="font-medium text-yellow-800">Jawaban:</p>
+                                <p class="text-yellow-700" id="answer3">Peluangnya adalah 20/56 atau sekitar 35.71%.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kalkulator Peluang -->
+        <section class="mb-16 bg-indigo-50 rounded-xl shadow-md overflow-hidden transition-all card-hover">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-200 text-indigo-700 p-2 rounded-full mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </span>
+                    Kalkulator Peluang Dasar
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Single Probability -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang Tunggal</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah hasil sukses</label>
+                                <input type="number" id="successOutcomes" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Total hasil mungkin</label>
+                                <input type="number" id="totalOutcomes" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <button onclick="calculateSingleProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung Peluang</button>
+                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="singleProbResult">
+                                <p class="font-medium">Peluang: <span id="singleProbValue"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Combined OR Probability -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang A ATAU B</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A)</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probA" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B)</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probB" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A dan B) - opsional</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probAandB" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika saling lepas">
+                            </div>
+                            <button onclick="calculateOrProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung P(A atau B)</button>
+                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="orProbResult">
+                                <p class="font-medium">P(A atau B): <span id="orProbValue"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Combined AND Probability -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Peluang A DAN B</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(A)</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probA2" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B|A) - jika dependen</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probBgivenA" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika independen">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">P(B) - jika independen</label>
+                                <input type="number" step="0.01" min="0" max="1" id="probB2" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Kosongkan jika dependen">
+                            </div>
+                            <button onclick="calculateAndProbability()" class="probability-btn text-white px-4 py-2 rounded-lg w-full">Hitung P(A dan B)</button>
+                            <div class="mt-2 p-3 bg-gray-100 rounded-md hidden" id="andProbResult">
+                                <p class="font-medium">P(A dan B): <span id="andProbValue"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kuis Interaktif -->
+        <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <span class="bg-indigo-100 text-indigo-600 p-2 rounded-full mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                    Kuis Pemahaman Peluang
+                </h2>
+                
+                <div class="space-y-8">
+                    <!-- Question 1 -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">1. Jika sebuah dadu dilempar, berapa peluang munculnya angka genap?</h3>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <button onclick="checkAnswer(1, this, '1/2')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/2</button>
+                            <button onclick="checkAnswer(1, this, '1/3')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/3</button>
+                            <button onclick="checkAnswer(1, this, '1/6')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/6</button>
+                            <button onclick="checkAnswer(1, this, '2/3')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">2/3</button>
+                        </div>
+                        <div id="feedback1" class="mt-3 hidden p-3 rounded-lg"></div>
+                    </div>
+                    
+                    <!-- Question 2 -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">2. Dalam set kartu remi (52 kartu), berapa peluang terambil kartu As atau King?</h3>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <button onclick="checkAnswer(2, this, '2/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">2/13</button>
+                            <button onclick="checkAnswer(2, this, '1/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">1/13</button>
+                            <button onclick="checkAnswer(2, this, '4/13')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">4/13</button>
+                            <button onclick="checkAnswer(2, this, '8/52')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">8/52</button>
+                        </div>
+                        <div id="feedback2" class="mt-3 hidden p-3 rounded-lg"></div>
+                    </div>
+                    
+                    <!-- Question 3 -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">3. Jika peluang hujan besok adalah 0.4 dan peluang Anda lupa membawa payung adalah 0.3 (independen terhadap hujan), berapa peluang besok hujan DAN Anda lupa payung?</h3>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <button onclick="checkAnswer(3, this, '0.12')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.12</button>
+                            <button onclick="checkAnswer(3, this, '0.7')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.7</button>
+                            <button onclick="checkAnswer(3, this, '0.58')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.58</button>
+                            <button onclick="checkAnswer(3, this, '0.1')" class="quiz-option p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">0.1</button>
+                        </div>
+                        <div id="feedback3" class="mt-3 hidden p-3 rounded-lg"></div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-gray-100 rounded-lg hidden" id="quizResult">
+                    <p class="font-medium">Skor Anda: <span id="quizScore">0</span>/3</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kesimpulan -->
+        <section class="bg-indigo-100 rounded-xl p-8 mb-8">
+            <h2 class="text-2xl font-bold text-indigo-800 mb-4">Kesimpulan</h2>
+            <div class="text-indigo-900 space-y-4">
+                <p>Peluang adalah alat fundamental dalam statistika yang memungkinkan kita mengukur dan mengkuantifikasi ketidakpastian. Dengan memahami berbagai jenis peluang (klasik, empiris, subjektif) dan aturan dasarnya (penjumlahan dan perkalian), kita dapat menganalisis berbagai situasi secara lebih objektif.</p>
+                <p>Konsep peluang memiliki aplikasi luas mulai dari ilmu alam, ilmu sosial, bisnis, hingga kehidupan sehari-hari. Kemampuan untuk menghitung dan menafsirkan peluang membantu dalam pengambilan keputusan yang lebih baik di bawah ketidakpastian.</p>
+                <p class="font-medium">Dengan latihan terus menerus melalui contoh soal dan alat interaktif seperti yang disediakan di artikel ini, pemahaman Anda tentang peluang akan semakin mendalam dan aplikatif.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-600 text-sm py-6">
+            <p>© 2023 Artikel Edukatif Peluang Statistika. Dibuat untuk tujuan pendidikan.</p>
+            <p class="mt-2">Referensi: Ross, S. (2019). "A First Course in Probability". Pearson Education.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan penyelesaian soal
+        function showSolution(questionNum) {
+            const solution = document.getElementById(`solution${questionNum}`);
+            solution.classList.toggle('hidden');
+        }
+
+        // Fungsi kalkulator peluang
+        function calculateSingleProbability() {
+            const success = parseFloat(document.getElementById('successOutcomes').value);
+            const total = parseFloat(document.getElementById('totalOutcomes').value);
+            
+            if (isNaN(success) {
+                alert('Masukkan jumlah hasil sukses yang valid');
+                return;
+            }
+            
+            if (isNaN(total) || total === 0) {
+                alert('Masukkan total hasil mungkin yang valid (tidak boleh 0)');
+                return;
+            }
+            
+            if (success > total) {
+                alert('Jumlah hasil sukses tidak boleh lebih besar dari total hasil mungkin');
+                return;
+            }
+            
+            const probability = success / total;
+            const resultDiv = document.getElementById('singleProbResult');
+            const resultValue = document.getElementById('singleProbValue');
+            
+            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
+            resultDiv.classList.remove('hidden');
+        }
+        
+        function calculateOrProbability() {
+            const probA = parseFloat(document.getElementById('probA').value);
+            const probB = parseFloat(document.getElementById('probB').value);
+            const probAandB = parseFloat(document.getElementById('probAandB').value) || 0;
+            
+            if (isNaN(probA) || isNaN(probB)) {
+                alert('Masukkan nilai P(A) dan P(B) yang valid');
+                return;
+            }
+            
+            if (probA < 0 || probA > 1 || probB < 0 || probB > 1 || probAandB < 0 || probAandB > 1) {
+                alert('Nilai peluang harus antara 0 dan 1');
+                return;
+            }
+            
+            if (probAandB > Math.min(probA, probB)) {
+                alert('P(A dan B) tidak boleh lebih besar dari P(A) atau P(B)');
+                return;
+            }
+            
+            const probability = probA + probB - probAandB;
+            const resultDiv = document.getElementById('orProbResult');
+            const resultValue = document.getElementById('orProbValue');
+            
+            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
+            resultDiv.classList.remove('hidden');
+        }
+        
+        function calculateAndProbability() {
+            const probA = parseFloat(document.getElementById('probA2').value);
+            const probBgivenA = parseFloat(document.getElementById('probBgivenA').value);
+            const probB = parseFloat(document.getElementById('probB2').value);
+            
+            if (isNaN(probA)) {
+                alert('Masukkan nilai P(A) yang valid');
+                return;
+            }
+            
+            if (probA < 0 || probA > 1) {
+                alert('Nilai P(A) harus antara 0 dan 1');
+                return;
+            }
+            
+            let probability;
+            
+            if (!isNaN(probBgivenA)) { // Dependen
+                if (probBgivenA < 0 || probBgivenA > 1) {
+                    alert('Nilai P(B|A) harus antara 0 dan 1');
+                    return;
+                }
+                probability = probA * probBgivenA;
+            } else if (!isNaN(probB)) { // Independen
+                if (probB < 0 || probB > 1) {
+                    alert('Nilai P(B) harus antara 0 dan 1');
+                    return;
+                }
+                probability = probA * probB;
+            } else {
+                alert('Masukkan nilai P(B|A) untuk peristiwa dependen atau P(B) untuk independen');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('andProbResult');
+            const resultValue = document.getElementById('andProbValue');
+            
+            resultValue.textContent = probability.toFixed(4) + ' atau ' + (probability*100).toFixed(2) + '%';
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Fungsi kuis
+        let score = 0;
+        
+        function checkAnswer(questionNum, button, correctAnswer) {
+            const feedbackDiv = document.getElementById(`feedback${questionNum}`);
+            const userAnswer = button.textContent.trim();
+            
+            // Reset semua opsi untuk pertanyaan ini
+            const allOptions = document.querySelectorAll(`.quiz-option`);
+            allOptions.forEach(opt => {
+                opt.classList.remove('bg-green-100', 'border-green-400', 'bg-red-100', 'border-red-400');
+            });
+            
+            if (userAnswer === correctAnswer) {
+                button.classList.add('bg-green-100', 'border-green-400');
+                feedbackDiv.innerHTML = `<p class="text-green-700">✅ Benar! ${getExplanation(questionNum)}</p>`;
+                score++;
+            } else {
+                button.classList.add('bg-red-100', 'border-red-400');
+                feedbackDiv.innerHTML = `<p class="text-red-700">❌ Salah. Jawaban benar adalah ${correctAnswer}. ${getExplanation(questionNum)}</p>`;
+            }
+            
+            feedbackDiv.classList.remove('hidden');
+            
+            // Update skor
+            document.getElementById('quizScore').textContent = score;
+            if (score > 0) {
+                document.getElementById('quizResult').classList.remove('hidden');
+            }
+        }
+        
+        function getExplanation(questionNum) {
+            const explanations = {
+                1: "Angka genap pada dadu adalah 2, 4, 6 (3 kemungkinan). Total hasil adalah 6. Jadi peluangnya 3/6 = 1/2.",
+                2: "Ada 4 As dan 4 King dalam set kartu remi (total 8). Peluangnya 8/52 = 2/13.",
+                3: "Karena peristiwa independen, P(hujan dan lupa payung) = P(hujan) × P(lupa payung) = 0.4 × 0.3 = 0.12."
+            };
+            return explanations[questionNum];
+        }
+
+        // Chart.js untuk visualisasi peluang dadu
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('diceChart').getContext('2d');
+            const diceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['1', '2', '3', '4', '5', '6'],
+                    datasets: [{
+                        label: 'Peluang',
+                        data: [1/6, 1/6, 1/6, 1/6, 1/6, 1/6],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.7)',
+                            'rgba(118, 75, 162, 0.7)',
+                            'rgba(102, 126, 234, 0.7)',
+                            'rgba(118, 75, 162, 0.7)',
+                            'rgba(102, 126, 234, 0.7)',
+                            'rgba(118, 75, 162, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(118, 75, 162, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(118, 75, 162, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(118, 75, 162, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1,
+                            title: {
+                                display: true,
+                                text: 'Peluang'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Hasil Lemparan Dadu'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Peluang: ${(context.raw*100).toFixed(2)}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
