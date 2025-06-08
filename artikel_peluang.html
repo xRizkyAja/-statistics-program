@@ -275,7 +275,7 @@
             </div>
         </section>
 
-        <!-- Contoh Soal Interaktif -->
+        <!-- Contoh Soal -->
         <section class="mb-16 bg-white rounded-xl shadow-md overflow-hidden transition-all card-hover">
             <div class="p-8">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -284,7 +284,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </span>
-                    Contoh Soal Interaktif
+                    Contoh Soal
                 </h2>
                 
                 <div class="space-y-8">
@@ -303,7 +303,7 @@
                                     <p class="text-gray-700">P(merah) = jumlah bola merah / total bola = 4/10 = 0.4</p>
                                 </div>
                             </div>
-                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                            <div id="answer1" class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 hidden">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
                                 <p class="text-yellow-700">Peluang terambil bola merah adalah 0.4 atau 40%.</p>
                             </div>
@@ -328,7 +328,7 @@
                                     <p class="text-gray-700">P(hati atau gambar) = 13/52 + 12/52 - 3/52 = 22/52 ≈ 0.4231</p>
                                 </div>
                             </div>
-                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                            <div id="answer2" class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 hidden">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
                                 <p class="text-yellow-700">Peluangnya adalah 22/52 atau sekitar 42.31%.</p>
                             </div>
@@ -352,7 +352,7 @@
                                     <p class="text-gray-700">P(kedua merah) = (5/8) × (4/7) = 20/56 ≈ 0.3571</p>
                                 </div>
                             </div>
-                            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                            <div id="answer3" class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 hidden">
                                 <p class="font-medium text-yellow-800">Jawaban:</p>
                                 <p class="text-yellow-700">Peluangnya adalah 20/56 atau sekitar 35.71%.</p>
                             </div>
@@ -371,19 +371,16 @@
                 <p class="font-medium">Dengan latihan terus menerus melalui contoh soal dan alat interaktif seperti yang disediakan di artikel ini, pemahaman Anda tentang peluang akan semakin mendalam dan aplikatif.</p>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="text-center text-gray-600 text-sm py-6">
-            <p>© 2023 Artikel Edukatif Peluang Statistika. Dibuat untuk tujuan pendidikan.</p>
-            <p class="mt-2">Referensi: Ross, S. (2019). "A First Course in Probability". Pearson Education.</p>
-        </footer>
     </div>
 
     <script>
-        // Fungsi untuk menampilkan penyelesaian soal
+        // Fungsi untuk menampilkan penyelesaian soal dan jawaban
         function showSolution(questionNum) {
             const solution = document.getElementById(`solution${questionNum}`);
+            const answer = document.getElementById(`answer${questionNum}`);
+            
             solution.classList.toggle('hidden');
+            answer.classList.toggle('hidden');
         }
 
         // Inisialisasi grafik peluang dadu saat dokumen siap
