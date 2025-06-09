@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminasi Gauss: Metode Dasar Aljabar Linier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.6.0/lib/browser/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <style>
+        .matrix-container {
+            display: inline-block;
+            margin: 10px;
+            overflow-x: auto;
+        }
+        .matrix {
+            display: inline-table;
+            border-collapse: collapse;
+        }
+        .matrix td {
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .matrix-bracket {
+            display: inline-block;
+            height: 100%;
+            vertical-align: top;
+            font-size: 2em;
+            color: #4a5568;
+        }
+        .operation-step {
+            transition: all 0.3s ease;
+        }
+        .operation-step:hover {
+            background-color: #f0f9ff;
+            transform: scale(1.02);
+        }
+        .solution-step {
+            border-left: 3px solid #3b82f6;
+            padding-left: 15px;
+            margin: 10px 0;
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #d1d5db;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-blue-600 text-white py-6 shadow-md">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">Eliminasi Gauss</h1>
+            <p class="mt-2 opacity-90">Metode Fundamental dalam Aljabar Linier untuk Menyelesaikan Sistem Persamaan Linear</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">Pengertian Eliminasi Gauss</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-gray-700 mb-4">
+                        Eliminasi Gauss adalah suatu algoritma dalam aljabar linear untuk menentukan solusi dari sistem persamaan linear, 
+                        mencari rank suatu matriks, dan menghitung invers dari matriks persegi. Metode ini dinamai dari matematikawan 
+                        Jerman <span class="font-semibold">Carl Friedrich Gauss</span>.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        Proses eliminasi Gauss mengubah sistem persamaan linear atau matriks menjadi bentuk <span class="font-semibold">eselon baris</span> 
+                        (row echelon form) melalui serangkaian operasi baris elementer.
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                        <h3 class="font-semibold text-blue-700 mb-2">Operasi Baris Elementer:</h3>
+                        <ul class="list-disc pl-5 text-gray-700">
+                            <li class="mb-1">Menukar posisi dua baris</li>
+                            <li class="mb-1">Mengalikan suatu baris dengan konstanta bukan nol</li>
+                            <li>Menambahkan kelipatan suatu baris ke baris lainnya</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="matrix-container">
+                            <span class="matrix-bracket">[</span>
+                            <table class="matrix">
+                                <tr>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>-1</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>-3</td>
+                                    <td>-1</td>
+                                    <td>2</td>
+                                    <td>-11</td>
+                                </tr>
+                                <tr>
+                                    <td>-2</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>-3</td>
+                                </tr>
+                            </table>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+                        <div class="text-center text-gray-600 mt-2">Contoh Matriks Augmented</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">Langkah-langkah Eliminasi Gauss</h2>
+            <div class="space-y-6">
+                <div class="operation-step p-4 border border-gray-200 rounded-lg">
+                    <h3 class="font-semibold text-lg text-blue-700 mb-2">1. Membentuk Matriks Augmented</h3>
+                    <p class="text-gray-700 mb-3">
+                        Sistem persamaan linear diubah menjadi matriks augmented yang menggabungkan koefisien variabel dan konstanta.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-6 mt-4">
+                        <div>
+                            <p class="text-gray-600 mb-2 text-center">Sistem Persamaan:</p>
+                            <div class="bg-gray-100 p-3 rounded">
+                                <p>2x + y - z = 8</p>
+                                <p>-3x - y + 2z = -11</p>
+                                <p>-2x + y + 2z = -3</p>
+                            </div>
+                        </div>
+                        <div class="text-2xl text-gray-400">→</div>
+                        <div>
+                            <p class="text-gray-600 mb-2 text-center">Matriks Augmented:</p>
+                            <div class="matrix-container">
+                                <span class="matrix-bracket">[</span>
+                                <table class="matrix">
+                                    <tr>
+                                        <td>2</td>
+                                        <td>1</td>
+                                        <td>-1</td>
+                                        <td class="border-l-2 border-blue-500">8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-3</td>
+                                        <td>-1</td>
+                                        <td>2</td>
+                                        <td class="border-l-2 border-blue-500">-11</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-2</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td class="border-l-2 border-blue-500">-3</td>
+                                    </tr>
+                                </table>
+                                <span class="matrix-bracket">]</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="operation-step p-4 border border-gray-200 rounded-lg">
+                    <h3 class="font-semibold text-lg text-blue-700 mb-2">2. Eliminasi Maju (Forward Elimination)</h3>
+                    <p class="text-gray-700 mb-3">
+                        Menggunakan operasi baris elementer untuk mendapatkan bentuk eselon baris (REF).
+                    </p>
+                    <div class="solution-step mb-3">
+                        <p class="text-gray-600 mb-1"><b>Langkah 1:</b> Buat elemen pertama kolom pertama (pivot) menjadi 1</p>
+                        <p class="text-sm text-gray-500">B1 ← B1 × (1/2)</p>
+                        <div class="matrix-container mt-2">
+                            <span class="matrix-bracket">[</span>
+                            <table class="matrix">
+                                <tr class="bg-blue-50">
+                                    <td>1</td>
+                                    <td>0.5</td>
+                                    <td>-0.5</td>
+                                    <td class="border-l-2 border-blue-500">4</td>
+                                </tr>
+                                <tr>
+                                    <td>-3</td>
+                                    <td>-1</td>
+                                    <td>2</td>
+                                    <td class="border-l-2 border-blue-500">-11</td>
+                                </tr>
+                                <tr>
+                                    <td>-2</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td class="border-l-2 border-blue-500">-3</td>
+                                </tr>
+                            </table>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+                    </div>
+                    <div class="solution-step mb-3">
+                        <p class="text-gray-600 mb-1"><b>Langkah 2:</b> Eliminasi elemen di bawah pivot pertama</p>
+                        <p class="text-sm text-gray-500">B2 ← B2 + 3×B1</p>
+                        <p class="text-sm text-gray-500">B3 ← B3 + 2×B1</p>
+                        <div class="matrix-container mt-2">
+                            <span class="matrix-bracket">[</span>
+                            <table class="matrix">
+                                <tr>
+                                    <td>1</td>
+                                    <td>0.5</td>
+                                    <td>-0.5</td>
+                                    <td class="border-l-2 border-blue-500">4</td>
+                                </tr>
+                                <tr class="bg-blue-50">
+                                    <td>0</td>
+                                    <td>0.5</td>
+                                    <td>0.5</td>
+                                    <td class="border-l-2 border-blue-500">1</td>
+                                </tr>
+                                <tr class="bg-blue-50">
+                                    <td>0</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td class="border-l-2 border-blue-500">5</td>
+                                </tr>
+                            </table>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+                    </div>
+                    <div class="solution-step">
+                        <p class="text-gray-600 mb-1"><b>Langkah 3:</b> Buat elemen pivot kedua menjadi 1 dan eliminasi di bawahnya</p>
+                        <p class="text-sm text-gray-500">B2 ← B2 × 2</p>
+                        <p class="text-sm text-gray-500">B3 ← B3 - 4×B2</p>
+                        <div class="matrix-container mt-2">
+                            <span class="matrix-bracket">[</span>
+                            <table class="matrix">
+                                <tr>
+                                    <td>1</td>
+                                    <td>0.5</td>
+                                    <td>-0.5</td>
+                                    <td class="border-l-2 border-blue-500">4</td>
+                                </tr>
+                                <tr class="bg-blue-50">
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td class="border-l-2 border-blue-500">2</td>
+                                </tr>
+                                <tr class="bg-blue-50">
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>-3</td>
+                                    <td class="border-l-2 border-blue-500">-3</td>
+                                </tr>
+                            </table>
+                            <span class="matrix-bracket">]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="operation-step p-4 border border-gray-200 rounded-lg">
+                    <h3 class="font-semibold text-lg text-blue-700 mb-2">3. Substitusi Mundur (Back Substitution)</h3>
+                    <p class="text-gray-700 mb-3">
+                        Setelah matriks dalam bentuk eselon baris, kita dapat menyelesaikan variabel secara berurutan dari bawah ke atas.
+                    </p>
+                    <div class="solution-step mb-3">
+                        <p class="text-gray-600 mb-1"><b>Dari baris 3:</b> -3z = -3 → z = 1</p>
+                    </div>
+                    <div class="solution-step mb-3">
+                        <p class="text-gray-600 mb-1"><b>Dari baris 2:</b> y + z = 2 → y + 1 = 2 → y = 1</p>
+                    </div>
+                    <div class="solution-step">
+                        <p class="text-gray-600 mb-1"><b>Dari baris 1:</b> x + 0.5y - 0.5z = 4 → x + 0.5 - 0.5 = 4 → x = 4</p>
+                    </div>
+                    <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <h4 class="font-semibold text-green-700">Solusi Sistem:</h4>
+                        <p class="mt-1">x = 2, y = 3, z = 1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">Visualisasi Eliminasi Gauss</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-lg mb-3">Interaktif: Sistem Persamaan Linear</h3>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">Jumlah Variabel:</label>
+                        <select id="varCount" class="w-full p-2 border border-gray-300 rounded">
+                            <option value="2">2 Variabel</option>
+                            <option value="3" selected>3 Variabel</option>
+                            <option value="4">4 Variabel</option>
+                        </select>
+                    </div>
+                    <div id="equationInputs" class="space-y-3">
+                        <!-- Generated by JavaScript -->
+                    </div>
+                    <button id="solveBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Selesaikan dengan Eliminasi Gauss
+                    </button>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-3">Proses Solusi</h3>
+                    <div id="solutionSteps" class="bg-gray-50 p-4 rounded-lg border border-gray-200 min-h-[200px]">
+                        <p class="text-gray-500">Masukkan sistem persamaan dan klik tombol "Selesaikan" untuk melihat proses eliminasi Gauss.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">Aplikasi Eliminasi Gauss</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                    <h3 class="font-semibold text-indigo-700 mb-2">1. Penyelesaian Sistem Persamaan Linear</h3>
+                    <p class="text-gray-700">
+                        Eliminasi Gauss adalah metode paling dasar dan banyak digunakan untuk menyelesaikan sistem persamaan linear, 
+                        baik yang memiliki solusi tunggal, banyak solusi, maupun tidak memiliki solusi.
+                    </p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h3 class="font-semibold text-purple-700 mb-2">2. Mencari Invers Matriks</h3>
+                    <p class="text-gray-700">
+                        Dengan memanfaatkan matriks augmented [A|I], eliminasi Gauss dapat mengubah matriks A menjadi matriks identitas 
+                        sementara matriks identitas berubah menjadi invers dari A.
+                    </p>
+                </div>
+                <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                    <h3 class="font-semibold text-teal-700 mb-2">3. Menentukan Rank Matriks</h3>
+                    <p class="text-gray-700">
+                        Setelah matriks diubah menjadi bentuk eselon baris, jumlah baris tak nol menunjukkan rank dari matriks tersebut, 
+                        yang penting dalam analisis sistem linear.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                <h3 class="font-semibold text-yellow-700 mb-2">Catatan Penting:</h3>
+                <p class="text-gray-700">
+                    Eliminasi Gauss memiliki kompleksitas waktu O(n³) untuk matriks n×n. Untuk matriks besar, metode ini bisa menjadi 
+                    tidak efisien dan memerlukan teknik lain seperti dekomposisi LU atau metode iteratif.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-semibold mb-3">Eliminasi Gauss</h3>
+                    <p class="text-gray-400 max-w-md">
+                        Artikel edukatif ini menjelaskan metode eliminasi Gauss secara mendalam dengan contoh visual dan interaktif.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">Referensi</h3>
+                    <ul class="text-gray-400 space-y-1">
+                        <li><a href="#" class="hover:text-white">Linear Algebra and Its Applications - Gilbert Strang</a></li>
+                        <li><a href="#" class="hover:text-white">Introduction to Numerical Analysis - Stoer & Bulirsch</a></li>
+                        <li><a href="#" class="hover:text-white">Numerical Linear Algebra - Trefethen & Bau</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>© 2023 Matematika Komputasi. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const varCountSelect = document.getElementById('varCount');
+            const equationInputs = document.getElementById('equationInputs');
+            const solveBtn = document.getElementById('solveBtn');
+            const solutionSteps = document.getElementById('solutionSteps');
+            
+            // Initialize equation inputs
+            updateEquationInputs();
+            
+            // Update equation inputs when variable count changes
+            varCountSelect.addEventListener('change', updateEquationInputs);
+            
+            // Solve button click handler
+            solveBtn.addEventListener('click', solveSystem);
+            
+            function updateEquationInputs() {
+                const varCount = parseInt(varCountSelect.value);
+                equationInputs.innerHTML = '';
+                
+                // Create input fields for each equation
+                for (let i = 0; i < varCount; i++) {
+                    const equationDiv = document.createElement('div');
+                    equationDiv.className = 'flex items-center';
+                    
+                    // Create input fields for each coefficient
+                    for (let j = 0; j < varCount; j++) {
+                        const coeffInput = document.createElement('input');
+                        coeffInput.type = 'number';
+                        coeffInput.className = 'w-16 p-1 border border-gray-300 rounded mr-1';
+                        coeffInput.placeholder = '0';
+                        coeffInput.dataset.row = i;
+                        coeffInput.dataset.col = j;
+                        
+                        // Set some default values for 3 variables
+                        if (varCount === 3) {
+                            if (i === 0 && j === 0) coeffInput.value = '2';
+                            if (i === 0 && j === 1) coeffInput.value = '1';
+                            if (i === 0 && j === 2) coeffInput.value = '-1';
+                            if (i === 1 && j === 0) coeffInput.value = '-3';
+                            if (i === 1 && j === 1) coeffInput.value = '-1';
+                            if (i === 1 && j === 2) coeffInput.value = '2';
+                            if (i === 2 && j === 0) coeffInput.value = '-2';
+                            if (i === 2 && j === 1) coeffInput.value = '1';
+                            if (i === 2 && j === 2) coeffInput.value = '2';
+                        }
+                        
+                        equationDiv.appendChild(coeffInput);
+                        
+                        // Add variable label
+                        const varLabel = document.createElement('span');
+                        varLabel.className = 'mr-2';
+                        varLabel.textContent = String.fromCharCode(120 + j); // x, y, z, ...
+                        equationDiv.appendChild(varLabel);
+                        
+                        // Add + sign (except for last variable)
+                        if (j < varCount - 1) {
+                            const plusSign = document.createElement('span');
+                            plusSign.className = 'mr-2';
+                            plusSign.textContent = '+';
+                            equationDiv.appendChild(plusSign);
+                        }
+                    }
+                    
+                    // Add equals sign and constant input
+                    const equalsSign = document.createElement('span');
+                    equalsSign.className = 'mx-2';
+                    equalsSign.textContent = '=';
+                    equationDiv.appendChild(equalsSign);
+                    
+                    const constInput = document.createElement('input');
+                    constInput.type = 'number';
+                    constInput.className = 'w-16 p-1 border border-gray-300 rounded';
+                    constInput.placeholder = '0';
+                    constInput.dataset.row = i;
+                    constInput.dataset.col = varCount;
+                    
+                    // Set default constants for 3 variables
+                    if (varCount === 3) {
+                        if (i === 0) constInput.value = '8';
+                        if (i === 1) constInput.value = '-11';
+                        if (i === 2) constInput.value = '-3';
+                    }
+                    
+                    equationDiv.appendChild(constInput);
+                    
+                    equationInputs.appendChild(equationDiv);
+                }
+            }
+            
+            function solveSystem() {
+                const varCount = parseInt(varCountSelect.value);
+                solutionSteps.innerHTML = '<p class="text-gray-600">Memproses solusi...</p>';
+                
+                // Extract matrix from inputs
+                const matrix = [];
+                for (let i = 0; i < varCount; i++) {
+                    matrix[i] = [];
+                    for (let j = 0; j <= varCount; j++) {
+                        const input = document.querySelector(`input[data-row="${i}"][data-col="${j}"]`);
+                        matrix[i][j] = parseFloat(input.value) || 0;
+                    }
+                }
+                
+                // Display initial matrix
+                let solutionHTML = `
+                    <h4 class="font-semibold text-lg mb-2">Matriks Augmented Awal:</h4>
+                    ${renderMatrix(matrix)}
+                    <div class="border-t border-gray-200 my-4"></div>
+                `;
+                
+                // Forward elimination
+                for (let col = 0; col < varCount; col++) {
+                    // Partial pivoting: find row with maximum element in current column
+                    let maxRow = col;
+                    for (let row = col + 1; row < varCount; row++) {
+                        if (Math.abs(matrix[row][col]) > Math.abs(matrix[maxRow][col])) {
+                            maxRow = row;
+                        }
+                    }
+                    
+                    // Swap rows if needed
+                    if (maxRow !== col) {
+                        [matrix[col], matrix[maxRow]] = [matrix[maxRow], matrix[col]];
+                        solutionHTML += `
+                            <div class="solution-step mb-3">
+                                <p class="text-gray-600 mb-1"><b>Langkah ${col+1}.1:</b> Tukar baris ${col+1} dengan baris ${maxRow+1} untuk pivot maksimal</p>
+                                ${renderMatrix(matrix)}
+                            </div>
+                        `;
+                    }
+                    
+                    // Make diagonal element 1
+                    const pivot = matrix[col][col];
+                    if (pivot === 0) {
+                        solutionHTML += `
+                            <div class="solution-step mb-3 bg-red-50 p-3 rounded border border-red-200">
+                                <p class="text-red-600"><b>Peringatan:</b> Pivot bernilai 0. Sistem mungkin tidak memiliki solusi unik.</p>
+                            </div>
+                        `;
+                        break;
+                    }
+                    
+                    if (pivot !== 1) {
+                        for (let j = col; j <= varCount; j++) {
+                            matrix[col][j] /= pivot;
+                        }
+                        solutionHTML += `
+                            <div class="solution-step mb-3">
+                                <p class="text-gray-600 mb-1"><b>Langkah ${col+1}.2:</b> Bagi baris ${col+1} dengan ${pivot.toFixed(2)} untuk membuat pivot menjadi 1</p>
+                                ${renderMatrix(matrix)}
+                            </div>
+                        `;
+                    }
+                    
+                    // Eliminate other rows
+                    for (let row = 0; row < varCount; row++) {
+                        if (row !== col && matrix[row][col] !== 0) {
+                            const factor = matrix[row][col];
+                            for (let j = col; j <= varCount; j++) {
+                                matrix[row][j] -= factor * matrix[col][j];
+                            }
+                            
+                            solutionHTML += `
+                                <div class="solution-step mb-3">
+                                    <p class="text-gray-600 mb-1"><b>Langkah ${col+1}.${row+3}:</b> Eliminasi baris ${row+1} dengan mengurangi ${factor.toFixed(2)} × baris ${col+1}</p>
+                                    ${renderMatrix(matrix)}
+                                </div>
+                            `;
+                        }
+                    }
+                }
+                
+                // Check for no solution or infinite solutions
+                let hasSolution = true;
+                let infiniteSolutions = false;
+                
+                for (let i = 0; i < varCount; i++) {
+                    let allZero = true;
+                    for (let j = 0; j < varCount; j++) {
+                        if (Math.abs(matrix[i][j]) > 1e-10) {
+                            allZero = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allZero && Math.abs(matrix[i][varCount]) > 1e-10) {
+                        hasSolution = false;
+                        break;
+                    } else if (allZero) {
+                        infiniteSolutions = true;
+                    }
+                }
+                
+                // Back substitution
+                if (hasSolution) {
+                    solutionHTML += `
+                        <div class="border-t border-gray-200 my-4"></div>
+                        <h4 class="font-semibold text-lg mb-2">Substitusi Mundur:</h4>
+                    `;
+                    
+                    const solution = new Array(varCount);
+                    for (let i = varCount - 1; i >= 0; i--) {
+                        solution[i] = matrix[i][varCount];
+                        for (let j = i + 1; j < varCount; j++) {
+                            solution[i] -= matrix[i][j] * solution[j];
+                        }
+                        solution[i] /= matrix[i][i];
+                        
+                        solutionHTML += `
+                            <div class="solution-step mb-2">
+                                <p class="text-gray-600">
+                                    <b>${String.fromCharCode(120 + i)}</b> = ${solution[i].toFixed(4)}
+                                </p>
+                            </div>
+                        `;
+                    }
+                    
+                    solutionHTML += `
+                        <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <h4 class="font-semibold text-green-700">Solusi Sistem:</h4>
+                            <div class="mt-1 grid grid-cols-${Math.min(3, varCount)} gap-2">
+                                ${solution.map((val, i) => `
+                                    <div>${String.fromCharCode(120 + i)} = ${val.toFixed(4)}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (infiniteSolutions) {
+                    solutionHTML += `
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <h4 class="font-semibold text-yellow-700">Sistem memiliki solusi tak terhingga banyaknya</h4>
+                        </div>
+                    `;
+                } else {
+                    solutionHTML += `
+                        <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <h4 class="font-semibold text-red-700">Sistem tidak memiliki solusi</h4>
+                        </div>
+                    `;
+                }
+                
+                solutionSteps.innerHTML = solutionHTML;
+            }
+            
+            function renderMatrix(matrix) {
+                const rows = matrix.length;
+                const cols = rows > 0 ? matrix[0].length : 0;
+                
+                let html = '<div class="matrix-container"><span class="matrix-bracket">[</span><table class="matrix">';
+                
+                for (let i = 0; i < rows; i++) {
+                    html += '<tr>';
+                    for (let j = 0; j < cols; j++) {
+                        const cellClass = j === cols - 1 ? 'border-l-2 border-blue-500' : '';
+                        html += `<td class="${cellClass}">${matrix[i][j].toFixed(2)}</td>`;
+                    }
+                    html += '</tr>';
+                }
+                
+                html += '</table><span class="matrix-bracket">]</span></div>';
+                return html;
+            }
+        });
+    </script>
+</body>
+</html>
