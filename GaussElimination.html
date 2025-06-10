@@ -357,25 +357,20 @@
             const solveBtn = document.getElementById('solveBtn');
             const solutionSteps = document.getElementById('solutionSteps');
             
-            // Initialize equation inputs
             updateEquationInputs();
             
-            // Update equation inputs when variable count changes
             varCountSelect.addEventListener('change', updateEquationInputs);
             
-            // Solve button click handler
             solveBtn.addEventListener('click', solveSystem);
             
             function updateEquationInputs() {
                 const varCount = parseInt(varCountSelect.value);
                 equationInputs.innerHTML = '';
                 
-                // Create input fields for each equation
                 for (let i = 0; i < varCount; i++) {
                     const equationDiv = document.createElement('div');
                     equationDiv.className = 'flex items-center';
                     
-                    // Create input fields for each coefficient
                     for (let j = 0; j < varCount; j++) {
                         const coeffInput = document.createElement('input');
                         coeffInput.type = 'number';
@@ -384,7 +379,6 @@
                         coeffInput.dataset.row = i;
                         coeffInput.dataset.col = j;
                         
-                        // Set some default values for 3 variables
                         if (varCount === 3) {
                             if (i === 0 && j === 0) coeffInput.value = '2';
                             if (i === 0 && j === 1) coeffInput.value = '1';
@@ -399,13 +393,11 @@
                         
                         equationDiv.appendChild(coeffInput);
                         
-                        // Add variable label
                         const varLabel = document.createElement('span');
                         varLabel.className = 'mr-2';
-                        varLabel.textContent = String.fromCharCode(120 + j); // x, y, z, ...
+                        varLabel.textContent = String.fromCharCode(120 + j); 
                         equationDiv.appendChild(varLabel);
                         
-                        // Add + sign (except for last variable)
                         if (j < varCount - 1) {
                             const plusSign = document.createElement('span');
                             plusSign.className = 'mr-2';
@@ -414,7 +406,6 @@
                         }
                     }
                     
-                    // Add equals sign and constant input
                     const equalsSign = document.createElement('span');
                     equalsSign.className = 'mx-2';
                     equalsSign.textContent = '=';
@@ -427,7 +418,6 @@
                     constInput.dataset.row = i;
                     constInput.dataset.col = varCount;
                     
-                    // Set default constants for 3 variables
                     if (varCount === 3) {
                         if (i === 0) constInput.value = '8';
                         if (i === 1) constInput.value = '-11';
@@ -444,7 +434,6 @@
                 const varCount = parseInt(varCountSelect.value);
                 solutionSteps.innerHTML = '<p class="text-gray-600">Memproses solusi...</p>';
                 
-                // Extract matrix from inputs
                 const matrix = [];
                 for (let i = 0; i < varCount; i++) {
                     matrix[i] = [];
@@ -454,16 +443,13 @@
                     }
                 }
                 
-                // Display initial matrix
                 let solutionHTML = `
                     <h4 class="font-semibold text-lg mb-2">Matriks Augmented Awal:</h4>
                     ${renderMatrix(matrix)}
                     <div class="border-t border-gray-200 my-4"></div>
                 `;
                 
-                // Forward elimination
                 for (let col = 0; col < varCount; col++) {
-                    // Partial pivoting: find row with maximum element in current column
                     let maxRow = col;
                     for (let row = col + 1; row < varCount; row++) {
                         if (Math.abs(matrix[row][col]) > Math.abs(matrix[maxRow][col])) {
@@ -471,7 +457,6 @@
                         }
                     }
                     
-                    // Swap rows if needed
                     if (maxRow !== col) {
                         [matrix[col], matrix[maxRow]] = [matrix[maxRow], matrix[col]];
                         solutionHTML += `
@@ -482,7 +467,6 @@
                         `;
                     }
                     
-                    // Make diagonal element 1
                     const pivot = matrix[col][col];
                     if (pivot === 0) {
                         solutionHTML += `
@@ -505,7 +489,6 @@
                         `;
                     }
                     
-                    // Eliminate other rows
                     for (let row = 0; row < varCount; row++) {
                         if (row !== col && matrix[row][col] !== 0) {
                             const factor = matrix[row][col];
@@ -523,7 +506,6 @@
                     }
                 }
                 
-                // Check for no solution or infinite solutions
                 let hasSolution = true;
                 let infiniteSolutions = false;
                 
@@ -544,7 +526,6 @@
                     }
                 }
                 
-                // Back substitution
                 if (hasSolution) {
                     solutionHTML += `
                         <div class="border-t border-gray-200 my-4"></div>
